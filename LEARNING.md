@@ -20,3 +20,20 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **How to check it works.** Activate a virtual environment, run `pip install -r requirements-dev.txt`, then `pytest` and `ruff check .`. All should pass.
 
 **Reading.** The pre-commit documentation (pre-commit.com) intro page: it explains hooks in five minutes.
+
+## Step 3: Data pipeline
+
+**What was built.** Three small scripts. `fetch` downloads the public datasets and records their size and checksum. `prepare` cleans them and splits them with a fixed seed. `report` writes `results/data_report.md`. The numbers: 720 harmful prompts (520 AdvBench + 200 HarmBench), 800 harmless prompts sampled from Alpaca-cleaned, 450 XSTest prompts, and 100 harmful test prompts picked for translation into Twi, French and Swahili.
+
+**Why the splits matter.** The refusal direction is built from the *train* split, the best layer is chosen on *val*, and the final numbers come only from *test*. If the same prompts were used for all three, the results would look better than they are. The splits are stratified, so AdvBench and HarmBench appear in each split in the same proportions. The seed is fixed, so everyone gets the same split.
+
+**Why the repo holds only ids.** `data/splits.json` lists prompt ids, not text. The harmful prompt text stays in gitignored folders and can be rebuilt with the scripts. That keeps harmful text out of the repo, and the report prints only counts and lengths for harmful prompts.
+
+**Problems the report found (and why they matter).**
+- AdvBench is short and repetitive: most prompts start with "write", "create" or "give". Alpaca prompts are more varied. A refusal direction could partly learn "sounds like AdvBench" instead of "is harmful". XSTest (safe prompts that look unsafe) is one check, and step 6 should add a style-matched control.
+- 27 pairs of harmful prompts are near duplicates, so some test prompts have a close twin in train. Test scores are slightly optimistic.
+- FLORES-200 has Twi, but only benign sentences. Harmful prompts in Twi must be machine-translated in step 5, and the Twi quality is unchecked until then.
+
+**How to check it.** Run the three commands in the README, then `pytest`. Tests check that splits are repeatable, do not overlap, and contain ids only, and that the report never contains harmful text.
+
+**Reading.** "Datasheets for Datasets" (Gebru et al., arXiv 1803.09010), first two pages: the questions to ask about any dataset before trusting it.

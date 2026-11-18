@@ -1,0 +1,26 @@
+{
+ "advbench_duplicates_removed": 0,
+ "harmbench_duplicates_or_advbench_overlap_removed": 0,
+ "harmbench_non_standard_excluded": 200,
+ "alpaca": {
+  "total": 51760,
+  "with_input": 19157,
+  "too_short_or_long": 343,
+  "duplicates": 9,
+  "eligible": 32251
+ },
+ "flores": {
+  "lines": {
+   "eng_Latn": 1012,
+   "twi_Latn": 1012,
+   "fra_Latn": 1012,
+   "swh_Latn": 1012
+  },
+  "empty": {
+   "eng_Latn": 0,
+   "twi_Latn": 0,
+   "fra_Latn": 0,
+   "swh_Latn": 0
+  }
+ }
+}

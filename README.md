@@ -2,7 +2,7 @@
 
 An open study of how Gemma-2-2B-it decides to refuse, using a refusal direction, Gemma Scope sparse autoencoders and activation steering, and whether that mechanism carries over to Twi, French and Swahili. It measures refusal behaviour only and publishes no harmful completions.
 
-Status: setup done (step 2). See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
+Status: data pipeline done (step 3). See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
 
 ## Run locally (laptop: tests and the feature browser, no GPU)
 
@@ -36,7 +36,17 @@ Model runs need a 16 GB GPU, so they run in notebooks under `notebooks/` and sav
 
 ## Data and licences
 
-Filled in during step 3 (data pipeline). Sources and licences checked so far are in [PLAN.md](PLAN.md) section 5.
+Build the data (needs internet, about 70 MB): `python -m safetycircuits.data.fetch`, then `python -m safetycircuits.data.prepare`, then `python -m safetycircuits.data.report`. Raw files and prompt text stay in `data/raw/` and `data/interim/` (gitignored). The repo holds only ids (`data/splits.json`), checksums (`data/manifest.json`) and the report ([results/data_report.md](results/data_report.md)).
+
+| Data | Licence (checked 2026-11-18) | Use here |
+|---|---|---|
+| AdvBench (llm-attacks) | MIT | 520 harmful behaviours, from the GitHub CSV (the Hugging Face copy is gated) |
+| HarmBench | MIT | 200 standard text behaviours |
+| XSTest | CC-BY-4.0 | 450 prompts (250 safe, 200 unsafe) for over-refusal |
+| Alpaca-cleaned | CC-BY-4.0 on the dataset card; disputed because the text came from OpenAI models | 800 prompts sampled as harmless examples; prompts only, not redistributed |
+| FLORES-200 | CC-BY-SA 4.0 | Twi, French, Swahili and English devtest sentences; anything derived from it keeps the same licence |
+| Gemma-2-2B-it | Gemma Terms of Use + Prohibited Use Policy (gated) | the model under study |
+| Gemma Scope SAEs | CC-BY-4.0 | sparse autoencoders (trained on the base model) |
 
 ## Responsible use
 

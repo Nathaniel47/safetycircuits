@@ -1,0 +1,37 @@
+{
+  "advbench.csv": {
+    "url": "https://raw.githubusercontent.com/llm-attacks/llm-attacks/main/data/advbench/harmful_behaviors.csv",
+    "licence": "MIT",
+    "bytes": 82125,
+    "sha256": "6cd1a5c63c07610d7eb67307772ee5606017ee950b5770ab288a2c487489d3e1",
+    "fetched": "2026-11-18"
+  },
+  "harmbench.csv": {
+    "url": "https://raw.githubusercontent.com/centerforaisafety/HarmBench/main/data/behavior_datasets/harmbench_behaviors_text_all.csv",
+    "licence": "MIT",
+    "bytes": 198850,
+    "sha256": "8d81accedd38eaaf8b760618622bb888417d1fd0c86eba65c427a16f1cbb4afc",
+    "fetched": "2026-11-18"
+  },
+  "xstest.csv": {
+    "url": "https://raw.githubusercontent.com/paul-rottger/xstest/main/xstest_prompts.csv",
+    "licence": "CC-BY-4.0",
+    "bytes": 38719,
+    "sha256": "11783fb294ed017473ee53c207d71f2161c7672c8d0b037501e78387f801cb5a",
+    "fetched": "2026-11-18"
+  },
+  "alpaca.json": {
+    "url": "https://huggingface.co/datasets/yahma/alpaca-cleaned/resolve/main/alpaca_data_cleaned.json",
+    "licence": "CC-BY-4.0 on the dataset card (disputed: text came from OpenAI models)",
+    "bytes": 44307561,
+    "sha256": "bd844b8247a0f543804b6ce0882b0aaec4bbf5e8d66167df6213a0f1e4fe878b",
+    "fetched": "2026-11-18"
+  },
+  "flores.tgz": {
+    "url": "https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz",
+    "licence": "CC-BY-SA 4.0",
+    "bytes": 25585843,
+    "sha256": "b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6",
+    "fetched": "2026-11-18"
+  }
+}
