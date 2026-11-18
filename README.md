@@ -2,7 +2,7 @@
 
 An open study of how Gemma-2-2B-it decides to refuse, using a refusal direction, Gemma Scope sparse autoencoders and activation steering, and whether that mechanism carries over to Twi, French and Swahili. It measures refusal behaviour only and publishes no harmful completions.
 
-Status: data pipeline done (step 3). See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
+Status: refusal-direction code done (step 4); the GPU run is still to do. See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
 
 ## Run locally (laptop: tests and the feature browser, no GPU)
 
@@ -33,6 +33,7 @@ Model runs need a 16 GB GPU, so they run in notebooks under `notebooks/` and sav
 1. On huggingface.co: log in, open `google/gemma-2-2b-it`, click **Acknowledge license**.
 2. Create a read token (Settings → Access Tokens). Locally put it in `.env` as `HF_TOKEN=...` (gitignored). On Kaggle use Add-ons → Secrets; on Colab use Secrets.
 3. In the notebook: `pip install -r requirements-gpu.txt`.
+4. Step 4 runner: [notebooks/01_refusal_direction.ipynb](notebooks/01_refusal_direction.ipynb) (clones the repo, builds the data, runs `python -m safetycircuits.refusal.run`). Run it with `--limit 16` first as a smoke test.
 
 ## Data and licences
 

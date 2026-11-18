@@ -37,3 +37,32 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **How to check it.** Run the three commands in the README, then `pytest`. Tests check that splits are repeatable, do not overlap, and contain ids only, and that the report never contains harmful text.
 
 **Reading.** "Datasheets for Datasets" (Gebru et al., arXiv 1803.09010), first two pages: the questions to ask about any dataset before trusting it.
+
+## Step 4: Core feature (the refusal direction)
+
+**Status: code and tests are done; the real run on Gemma-2-2B-it has not happened yet.** It needs a GPU and your Hugging Face token. Run `notebooks/01_refusal_direction.ipynb` on Kaggle. Until then there are no refusal numbers in `results/`, and nothing in this repo should be quoted as a result.
+
+**The idea in plain English.** While Gemma reads a prompt, each layer keeps a long list of numbers (the *residual stream*) that holds what the model currently "thinks" about it. Take that list at the last token of the prompt, for many harmful prompts and many harmless prompts, and average each group. The *difference of the two averages* is an arrow in that number space. The study asks whether that single arrow is what makes the model refuse.
+
+**Two tests of the arrow.**
+- **Ablation** (remove it): at every layer, subtract the part of each vector that points along the arrow. If the arrow really drives refusal, harmful prompts should stop being refused.
+- **Addition** (add it): add the arrow to a harmless prompt. If it drives refusal, the model should start refusing harmless questions. Adding it to XSTest safe prompts measures over-refusal.
+
+**Controls.** Each test also runs with a *random* arrow of the same length. If removing a random arrow changes refusal as much as removing the real one, the result means nothing. Rates come with 95% confidence intervals (Wilson).
+
+**How the layer is chosen (no peeking at test data).** The arrow is built from the train prompts. Each layer is ranked on the val prompts by how well the arrow separates harmful from harmless (AUROC, with Cohen's d to break ties). The top three layers are then tried for ablation on val, and the one that removes the most refusal wins. The test split is touched only at the end.
+
+**What the code does.**
+- `refusal/direction.py`: the arrow, AUROC and the layer ranking (numpy only, tested in CI).
+- `model/hooks.py`: reads the residual stream at the last token, and removes or adds the arrow. Removal hooks the embeddings and the attention and MLP outputs of every layer, which are the things that write into the stream.
+- `refusal/classify.py`: decides "refusal or not" by matching phrases such as "I cannot" in the first 120 characters. No LLM judge. It is crude: it is only checked on a few unit-test examples so far, and Step 6 must check it by hand on 50 real replies.
+- `refusal/run.py`: runs everything and saves only numbers, never model replies.
+
+**How I checked it without the model.** The tests build a tiny random Gemma-2 and confirm that: captured values match what the model reports internally; after ablation the arrow's coordinate is about zero at every layer; adding shifts the coordinate by exactly the chosen amount; a random arrow does not remove the real one; and hooks are removed afterwards. They prove the plumbing, not the science.
+
+**Things to watch in the real run.**
+- The T4 and P100 have no native bf16, so the script uses fp32 (10.5 GB), which fits.
+- If ablation barely lowers refusal, check the chosen layer and the classifier before concluding anything.
+- Step 3 found that harmful and harmless prompts differ in style, so the arrow may partly encode style. The XSTest numbers are the first check.
+
+**Reading.** Arditi et al. 2024, "Refusal in Language Models Is Mediated by a Single Direction" (arXiv 2406.11717): sections 2 and 3.
