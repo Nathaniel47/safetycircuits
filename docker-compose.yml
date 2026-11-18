@@ -1,0 +1,6 @@
+services:
+  app:
+    build: .
+    ports: ["8501:8501"]
+    volumes: ["./results:/app/results", "./app:/app/app"]
+    mem_limit: 1g

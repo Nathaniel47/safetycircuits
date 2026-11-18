@@ -1,0 +1,8 @@
+# For Kaggle/Colab GPU notebooks: model runs, activation caching, SAEs, steering.
+# Kaggle and Colab already ship a matching torch; install it yourself only elsewhere.
+-r requirements.txt
+torch>=2.3
+transformers>=4.44
+accelerate>=0.33
+huggingface_hub>=0.24
+sae-lens>=3.0
