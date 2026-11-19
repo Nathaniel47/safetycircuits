@@ -86,3 +86,22 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **Which layers.** 24 (where the refusal direction was found) and 17 (a middle layer, because step 4 only tried late layers). The SAE used is the one whose average L0 is closest to 100.
 
 **Reading.** Lieberum et al. 2024, "Gemma Scope" (arXiv 2408.05147), section 2 (what JumpReLU SAEs are).
+
+## Step 5.2: Jailbreak study
+
+**Status: code and tests done; the GPU run (`notebooks/03_jailbreaks.ipynb`) has not happened, so there are no jailbreak results yet.**
+
+**The question.** A jailbreak is a way of wording a request so that the model complies when it would normally refuse. If refusal really runs through one direction (step 4), a successful jailbreak should push the model's activations *away* from that direction. This study tests that rather than assuming it.
+
+**The conditions.** The baseline (no jailbreak), five wrappers placed around the request (refusal suppression, prefix injection, fiction frame, an unrestricted-persona prompt, a research framing) and three suffixes: an "answer starting with Sure" suffix, a polite suffix and a suffix of random words. The polite and random-word suffixes are controls: if they lower refusal as much as the "clever" ones, the effect is just noise from a changed prompt. No optimised GCG suffixes are used (too expensive, and specific to one model). The wrappers hold no harmful content of their own, and a test checks that.
+
+**What is measured for each, on the 144 harmful test prompts.**
+- **Success rate:** the reply is not a refusal *and* not obviously broken. The broken-text check (`looks_degenerate`) is crude (very short, or one word repeated), so it will miss subtler nonsense. Replies are never saved.
+- **Refusal score:** the prompt's position along the refusal direction, scaled so 0 is a typical harmless prompt and 1 is a typical harmful one. **Suppression** is how far a jailbreak pulls the score towards 0.
+- **Refusal-feature score:** the same idea using the top SAE refusal features from step 5.1, when that result exists.
+- **Does the score predict the outcome?** Within one condition, an AUROC of how well the score separates prompts that were refused from prompts that were not. If jailbreaks work by lowering the score, it should be high. If the model refuses anyway at a low score, or complies at a high one, the single-direction story is incomplete.
+- **Features that mark failure:** pooling all jailbreak rows, which SAE features are most active when a jailbreak fails and the model still refuses.
+
+**Limits to keep in mind.** One layer (24), one seed, greedy decoding, a string-match refusal check, and the score is a projection at the last prompt token only. A "success" here means "did not refuse in the first 48 tokens", not "gave a harmful answer".
+
+**Reading.** Wei et al. 2023, "Jailbroken: How Does LLM Safety Training Fail?" (arXiv 2307.02483), the sections on competing objectives and mismatched generalization.

@@ -73,3 +73,14 @@ def random_unit(d_model: int, seed: int) -> np.ndarray:
     """Control: a random direction. Removing it should barely change refusal."""
     v = np.random.default_rng(seed).standard_normal(d_model)
     return v / np.linalg.norm(v)
+
+
+def calibrated_score(
+    acts: np.ndarray, unit: np.ndarray, harmless_mean: float, harmful_mean: float
+) -> np.ndarray:
+    """Refusal score: 0 at the typical harmless prompt, 1 at the typical harmful one.
+
+    acts (n, d) at the layer the direction was found at; harmless_mean and harmful_mean are the
+    mean projections of the train prompts of each class.
+    """
+    return (project(acts, unit) - harmless_mean) / (harmful_mean - harmless_mean)
