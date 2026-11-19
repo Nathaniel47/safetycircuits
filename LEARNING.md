@@ -125,3 +125,17 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **Reading the results honestly.** The refusal check looks for English refusal phrases plus French and Swahili ones. The Twi phrases are unverified guesses, so Twi refusal rates may be undercounted. Gemma may also answer in English. The direction AUROC does not depend on the classifier, so it is the more reliable number.
 
 **Reading.** Yong et al. 2023, "Low-Resource Languages Jailbreak GPT-4" (arXiv 2310.02446), and the FLORES-200 / NLLB paper "No Language Left Behind" (arXiv 2207.04672), the evaluation section.
+
+## Step 5.4: Interactive feature browser
+
+**Status: the app and cache builder are done and tested; the cache itself has not been built (needs a GPU run, `notebooks/05_browser_cache.ipynb`), so the app currently shows setup instructions.**
+
+**What it does.** Pick or type a prompt and see: a gauge with its refusal score (0 = like a typical harmless prompt, 1 = like a typical harmful one), whether Gemma refused it, a bar chart of the ten SAE features that fire most at the end of the prompt (refusal features in red, each linked to Neuronpedia), and a box plot showing where the prompt sits among all cached prompts. A second tab shows the study results (refusal direction table, jailbreak success rates, cross-lingual AUROC) from whichever result files exist.
+
+**Why a cache and not a live model.** Free hosting has no GPU, and the model needs about 10 GB. So a GPU run scores about 250 prompts once and saves the numbers (`results/browser_cache.json`); the app only reads that file. The honest limit: **you can only look up prompts that are in the cache.** A typed prompt that isn't cached gets a clear message, not a made-up score. A live mode would need a GPU machine and is not built.
+
+**What is in the cache.** Hand-written examples, harmless Alpaca prompts, XSTest safe and unsafe prompts, the XSTest unsafe prompts wrapped in each of the five jailbreak templates, harmless prompts translated into French, Swahili and Twi, and FLORES benign sentences. The "harmful-looking" examples are the short public XSTest ones. The long AdvBench and HarmBench text is kept out, and only refused/answered flags are stored, never replies.
+
+**How it is tested.** The logic lives in `safetycircuits/browser_core.py` and is unit tested. The Streamlit app is exercised with Streamlit's own test runner on a small fake cache (lookup, example buttons, unknown prompt, no cache). I could not open the app in a browser during this session, so how the charts *look* is unchecked.
+
+**Reading.** Streamlit docs, "App testing" (docs.streamlit.io), the page on `AppTest`.

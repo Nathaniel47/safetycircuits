@@ -10,7 +10,7 @@ Responsible handling: the study measures refusal behaviour only. It publishes re
 |---|---|
 | Model | **google/gemma-2-2b-it** (2.61B parameters, about 5.2 GB in bf16, about 10.5 GB in fp32). Gated on Hugging Face; checked 2026-11-18. |
 | SAEs | **Gemma Scope** `google/gemma-scope-2b-pt-res` (residual stream, CC-BY-4.0, not gated). **They are trained on the base model, not on 2B-it.** Instruction-tuned Gemma Scope SAEs exist only for 9B. We run them on 2B-it activations, and week 3 tests whether that works. One width (16k), canonical L0, a few layers. |
-| Libraries | PyTorch, Hugging Face Transformers, SAELens. TransformerLens only if it supports Gemma-2 cleanly, otherwise plain Hugging Face hooks. No nnsight. |
+| Libraries | PyTorch, Hugging Face Transformers. **SAELens dropped (step 5, 2026-11-19):** its loading API changed between versions and installing it upgraded torch on Kaggle; Gemma Scope SAEs are loaded directly from their `.npz` files (`safetycircuits/sae/load_sae.py`). TransformerLens only if it supports Gemma-2 cleanly, otherwise plain Hugging Face hooks. No nnsight. |
 | Harmful prompts | AdvBench (original GitHub CSV; the Hugging Face copy is gated) and HarmBench behaviours. About 100 held out for the translation set. |
 | Harmless prompts | Alpaca-cleaned (prompts only, not redistributed). |
 | Over-refusal | XSTest (250 safe, 200 unsafe prompts). |
@@ -62,7 +62,7 @@ flowchart LR
 - **Model wrapper**: loads Gemma-2-2B-it, runs prompts and caches residual-stream activations.
 - **Refusal direction**: the mean activation on harmful prompts minus the mean on harmless ones, at a chosen layer and token position. The best layer is chosen on a validation split.
 - **Steering**: removes the direction from every layer (ablation) or adds it to harmless prompts, and reports refusal and compliance rates, with XSTest as the over-refusal check.
-- **SAE analysis**: finds the features that fire more on refusals than on compliance, and compares them with the direction.
+- **SAE analysis** (layers 24 and 17, 16k width): finds the features that fire more on refusals than on compliance, and compares them with the direction.
 - **Jailbreak study**: scores each jailbreak by how much it suppresses the refusal direction and features, next to its effect on the refusal rate.
 - **Cross-lingual test**: applies the English direction to Twi, French and Swahili prompts and measures how well it separates harmful from harmless, with a "model understands the prompt" control.
 - **Refusal classifier**: string-match on refusal phrases, hand-checked on 50 outputs.

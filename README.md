@@ -2,7 +2,7 @@
 
 An open study of how Gemma-2-2B-it decides to refuse, using a refusal direction, Gemma Scope sparse autoencoders and activation steering, and whether that mechanism carries over to Twi, French and Swahili. It measures refusal behaviour only and publishes no harmful completions.
 
-Status: refusal direction found and tested (step 4); results saved in results/. See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
+Status: steps 2-5 code done. Direction results are in results/; the SAE, jailbreak, cross-lingual and browser-cache GPU runs are still to do. See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
 
 ## Run locally (laptop: tests and the feature browser, no GPU)
 
@@ -34,6 +34,14 @@ Model runs need a 16 GB GPU, so they run in notebooks under `notebooks/` and sav
 2. Create a read token (Settings → Access Tokens). Locally put it in `.env` as `HF_TOKEN=...` (gitignored). On Kaggle use Add-ons → Secrets; on Colab use Secrets.
 3. In the notebook: `pip install -r requirements-gpu.txt`.
 4. Step 4 runner: [notebooks/01_refusal_direction.ipynb](notebooks/01_refusal_direction.ipynb) (clones the repo, builds the data, runs `python -m safetycircuits.refusal.run`). Run it with `--limit 16` first as a smoke test.
+
+## Feature browser
+
+```bash
+streamlit run app/browser.py
+```
+
+It reads `results/browser_cache.json` (no GPU needed). Build the cache on Kaggle with notebooks 02 to 05 in `notebooks/` (`02` SAE features, `03` jailbreaks, `04` cross-lingual, `05` browser cache). Without the cache the app shows setup instructions. Typing a prompt that is not in the cache needs a live model, which is not wired in: pick a cached prompt instead.
 
 ## Data and licences
 
