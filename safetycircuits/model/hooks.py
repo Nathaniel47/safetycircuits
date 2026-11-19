@@ -79,3 +79,25 @@ def adding(model, layer_index: int, direction: torch.Tensor, coefficient: float)
         yield
     finally:
         handle.remove()
+
+
+@torch.no_grad()
+def layer_residuals_all(model, input_ids, attention_mask, layers) -> dict[int, torch.Tensor]:
+    """Residual stream after the given layers at every real token: {layer: (n_tokens, d)}.
+
+    Padding positions are dropped, so the result can be fed straight to an SAE.
+    """
+    captured: dict[int, torch.Tensor] = {}
+    keep = attention_mask.bool()
+    handles = [
+        decoder_layers(model)[i].register_forward_hook(
+            lambda _m, _i, out, i=i: captured.__setitem__(i, _first(out)[keep].float())
+        )
+        for i in layers
+    ]
+    try:
+        model(input_ids=input_ids, attention_mask=attention_mask)
+    finally:
+        for h in handles:
+            h.remove()
+    return captured

@@ -66,3 +66,23 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 - Step 3 found that harmful and harmless prompts differ in style, so the arrow may partly encode style. The XSTest numbers are the first check.
 
 **Reading.** Arditi et al. 2024, "Refusal in Language Models Is Mediated by a Single Direction" (arXiv 2406.11717): sections 2 and 3.
+
+## Step 5.1: Sparse-autoencoder feature analysis
+
+**Status: code and tests done; the GPU run (`notebooks/02_sae_features.ipynb`) has not happened, so there are no feature results yet.**
+
+**The idea in plain English.** The refusal direction (step 4) is one arrow in a 2,304-number space. It says *that* the model is about to refuse, but not *what is going on inside*. A sparse autoencoder (SAE) takes the same 2,304 numbers and re-writes them as activations of 16,384 "features", most of which are zero at any moment. Researchers often find that individual features look like single concepts ("requests for weapons", "polite apologies"). Gemma Scope is Google's free set of these SAEs for Gemma 2.
+
+**What we measure.**
+1. For each prompt, the SAE feature activations at the last prompt token.
+2. The features that fire much more on harmful prompts than on harmless ones (AUROC, ranked on train, rechecked on val, so a feature that was lucky on train shows up as weak on val).
+3. How each top feature's own vector points relative to the refusal direction (cosine), and how well the top 20 features together rebuild the direction (`direction_overlap`).
+4. A link to each feature's Neuronpedia page, where its top-activating text can be read. The link format is unchecked; open one to confirm.
+
+**The catch: these SAEs were trained on the base model, not on Gemma-2-2B-it.** There is no 2B-it release. So the first result to read is `sae_fit`: how much of the activation the SAE fails to explain (FVU, 0 is perfect) and how many features fire per token (L0), on the instruct model and, with `--compare-base`, on the base model. If the instruct numbers are close to the base numbers, the SAEs transfer. If not, feature results should be treated as weak. This is the week-3 decision in PLAN.md.
+
+**Why not SAELens.** The plan named it, but its loading API changed between versions and installing it upgraded torch in the Kaggle image (a likely cause of the crashes). Gemma Scope files are plain arrays, so `sae/load_sae.py` reads them directly (`W_enc`, `W_dec`, `b_enc`, `b_dec`, `threshold`) and does the "JumpReLU" step itself: a feature fires only if its value passes its own threshold. A test checks that. The file keys are from Google's published format and are checked at load, so the first Kaggle run will confirm them.
+
+**Which layers.** 24 (where the refusal direction was found) and 17 (a middle layer, because step 4 only tried late layers). The SAE used is the one whose average L0 is closest to 100.
+
+**Reading.** Lieberum et al. 2024, "Gemma Scope" (arXiv 2408.05147), section 2 (what JumpReLU SAEs are).

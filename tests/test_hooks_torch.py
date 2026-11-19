@@ -82,3 +82,15 @@ def test_random_control_direction_leaves_the_target_alone(tiny, ids):
     with ablating(tiny, other):
         after = last_token_residuals(tiny, ids)
     assert (after @ unit).abs().mean() > 0.01  # ablating another direction does not remove r
+
+
+def test_all_token_capture_drops_padding_and_matches_hidden_states(tiny):
+    from safetycircuits.model.hooks import layer_residuals_all
+
+    ids = torch.randint(1, 100, (2, 6))
+    mask = torch.tensor([[0, 0, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]])
+    out = layer_residuals_all(tiny, ids, mask, [0, 2])
+    assert out[0].shape == (10, 32)  # 4 + 6 real tokens
+    with torch.no_grad():
+        hs = tiny(input_ids=ids, attention_mask=mask, output_hidden_states=True).hidden_states
+    assert torch.allclose(out[0][4:], hs[1][1], atol=1e-4)  # second prompt, layer 0
