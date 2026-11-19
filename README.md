@@ -2,7 +2,7 @@
 
 An open study of how Gemma-2-2B-it decides to refuse, using a refusal direction, Gemma Scope sparse autoencoders and activation steering, and whether that mechanism carries over to Twi, French and Swahili. It measures refusal behaviour only and publishes no harmful completions.
 
-Status: refusal direction found and tested (step 4); raw result files still to add. See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
+Status: refusal direction found and tested (step 4); results saved in results/. See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
 
 ## Run locally (laptop: tests and the feature browser, no GPU)
 

@@ -40,7 +40,7 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 
 ## Step 4: Core feature (the refusal direction)
 
-**Status: code, tests and a first full run are done.** The numbers copied from the Kaggle output are in `results/refusal_direction_summary.md` (harmful refusal 98% -> 8% with the direction removed; random direction: no change). The raw `refusal_direction.json` and `.npy` are still to be added, and the replies have not been checked by hand, so treat the numbers as preliminary.
+**Status: code, tests and a first full run are done.** The numbers copied from the Kaggle output are in `results/refusal_direction_summary.md` (harmful refusal 98% -> 8% with the direction removed; random direction: no change). The raw `results/refusal_direction.json` and `.npy` are now in the repo. The replies have not been checked by hand, and only late layers were tried for ablation, so treat the numbers as preliminary.
 
 **The idea in plain English.** While Gemma reads a prompt, each layer keeps a long list of numbers (the *residual stream*) that holds what the model currently "thinks" about it. Take that list at the last token of the prompt, for many harmful prompts and many harmless prompts, and average each group. The *difference of the two averages* is an arrow in that number space. The study asks whether that single arrow is what makes the model refuse.
 
