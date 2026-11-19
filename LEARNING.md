@@ -105,3 +105,23 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **Limits to keep in mind.** One layer (24), one seed, greedy decoding, a string-match refusal check, and the score is a projection at the last prompt token only. A "success" here means "did not refuse in the first 48 tokens", not "gave a harmful answer".
 
 **Reading.** Wei et al. 2023, "Jailbroken: How Does LLM Safety Training Fail?" (arXiv 2307.02483), the sections on competing objectives and mismatched generalization.
+
+## Step 5.3: Cross-lingual test (Twi, French, Swahili)
+
+**Status: code and tests done; the GPU run (`notebooks/04_crosslingual.ipynb`) has not happened, so there are no cross-lingual results yet.**
+
+**The question.** The refusal direction was found from English prompts. Does the same arrow, unchanged, also separate harmful from harmless prompts written in Twi, French and Swahili? Safety training is known to transfer worse to languages with less data, so Twi is the interesting case.
+
+**How the prompts are made.** FLORES-200 does have Twi, but it holds only harmless Wikipedia-style sentences. So 100 harmful and 100 harmless English prompts are machine-translated with NLLB-200 (Meta's translation model; its licence is non-commercial, fine for research). Translated text stays in gitignored folders and is never committed.
+
+**Checking the translations.** Each translation is translated back to English and compared with the original using chrF (a character-overlap score from 0 to 100). That catches gross failures, such as garbage Twi, but not subtle ones. Results are reported for all prompts and for the "good" ones only (chrF at or above 35, a judgement call). A Twi reader should still check a sample by eye.
+
+**What is measured, per language.**
+- **Direction AUROC**: how well the English arrow separates harmful from harmless prompts in that language (1.0 perfect, 0.5 no better than chance), with a bootstrap interval.
+- **Mean score** for harmful, harmless, and FLORES sentences (benign text, which should sit near 0).
+- **Refusal rate** on harmful prompts, with and without the direction removed.
+- **Comprehension control**: Gemma is asked to translate the harmless prompts back into English. If it can't read Twi, a low AUROC in Twi says nothing about safety. It only says the model did not understand. Harmless prompts only are used here, so no harmful text is generated.
+
+**Reading the results honestly.** The refusal check looks for English refusal phrases plus French and Swahili ones. The Twi phrases are unverified guesses, so Twi refusal rates may be undercounted. Gemma may also answer in English. The direction AUROC does not depend on the classifier, so it is the more reliable number.
+
+**Reading.** Yong et al. 2023, "Low-Resource Languages Jailbreak GPT-4" (arXiv 2310.02446), and the FLORES-200 / NLLB paper "No Language Left Behind" (arXiv 2207.04672), the evaluation section.
