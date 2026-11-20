@@ -189,6 +189,19 @@ def table_text(r: dict) -> str:
             lines.append(
                 f"| {layer}{mark} | {ci(v['val_refusal_after_ablation'])} | {v['val_auroc']:.4f} |"
             )
+        rates = {
+            k: v["val_refusal_after_ablation"]["rate"]
+            for k, v in ev["layer_sweep_validation"].items()
+        }
+        lowest = min(rates.values())
+        tied = [k for k, v in rates.items() if v == lowest]
+        if len(tied) > 1:
+            lines += [
+                "",
+                f"Layers {', '.join(tied)} are tied at {pct(lowest)} on validation. The chosen layer is "
+                "the deepest of the tied ones, an arbitrary tie-break; only the chosen layer and the "
+                "headline layer were run on the test split.",
+            ]
         lines += [
             "",
             "Test split for the headline and chosen layers:",

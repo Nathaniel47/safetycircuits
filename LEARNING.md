@@ -139,3 +139,26 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **How it is tested.** The logic lives in `safetycircuits/browser_core.py` and is unit tested. The Streamlit app is exercised with Streamlit's own test runner on a small fake cache (lookup, example buttons, unknown prompt, no cache). I could not open the app in a browser during this session, so how the charts *look* is unchecked.
 
 **Reading.** Streamlit docs, "App testing" (docs.streamlit.io), the page on `AppTest`.
+
+## Step 6: Evaluation
+
+**Where to look.** [results/results_table.md](results/results_table.md) (all numbers), three charts (`chart_layer_sweep.png`, `chart_jailbreaks.png`, `chart_crosslingual.png`) and [results/limitations.md](results/limitations.md). Rebuild them with `python -m safetycircuits.evaluation.report`. The GPU part is `notebooks/06_evaluation.ipynb`.
+
+**Metrics, and why these.**
+- **Refusal rate with a 95% Wilson interval.** The study's question is "does the model refuse?", which is a yes/no per prompt, so a rate is the natural measure. The interval matters because 144 prompts is a small sample: it shows that 7.6% really is different from 98%, and that two jailbreaks at 15% and 6% are not clearly different.
+- **AUROC for "does the direction separate harmful from harmless?".** It does not depend on picking a threshold, and 0.5 always means chance. It is also easy to fool: on this dataset plain word counts score 0.99, so a high AUROC alone proves little.
+- **Causal tests (remove the direction, add the direction).** Separating two groups only shows the direction *correlates* with refusal. Removing it and watching refusal vanish, while a random direction does nothing, shows it is *used*.
+- **Jailbreak "score suppression".** How far a jailbreak pulls the prompt towards the harmless end of the direction. It asks whether jailbreaks work by lowering the refusal signal.
+- **Comprehension (chrF) for each language.** Without it a low score in Twi could mean "the model is unsafe in Twi" or "the model does not understand Twi". These need different conclusions.
+
+**Baselines (what a result has to beat).**
+- **A random direction of the same size.** Removing it leaves 97.6% ± 0.4% of harmful prompts refused (five random directions), against 7.6% for the real one.
+- **Text-only classifiers** on word counts, first word and prompt length. They tell us how much of the harmful/harmless split is just vocabulary and style. Word counts alone reach AUROC 0.99 on the main test, but only 0.61 on XSTest, where safe and unsafe prompts share words. The direction scores 0.98 there, so XSTest is the fairer test and the direction clearly beats the baseline on it.
+
+**Seeds and variance.** The direction was refitted on three random 80% subsets of the training prompts. It barely moves (cosine 0.9997 with the full-data direction, refusal after removal 7.4% ± 0.4%), so it is a stable property of the data. The sample standard deviation over three refits is a rough measure only. The refusal and jailbreak numbers still come from one set of replies.
+
+**A surprising result.** The direction fitted at layer 24 is not the best. Removing the direction fitted at layers 8 to 14 (or 25) left no validation prompt refused, while layers 16 to 24 did worse. Five layers tie, and the code broke the tie arbitrarily. Only two layers were run on the test split, so this is a lead, not a finding.
+
+**What the evaluation says about the earlier results.** The refusal classifier cannot be fully trusted. Of the 133 replies counted as "not refused" after removing the direction, a second check can confirm 71 as real compliance and cannot classify 62. The check cannot confirm any of the fiction-frame "successes" (stories do not start with "Sure"). Reading harmful replies by hand is not allowed under the project rules, so this stays open (see limitations).
+
+**Reading.** Davis and Goadrich 2006, "The Relationship Between Precision-Recall and ROC Curves", the first section on AUROC; and the Wikipedia article "Binomial proportion confidence interval" (Wilson section).
