@@ -1,0 +1,30 @@
+{
+ "n_test": {
+  "harmful": 144,
+  "harmless": 160
+ },
+ "baselines_auroc_test": {
+  "bag_of_words_naive_bayes": 0.9916666666666667,
+  "first_word_only": 0.8752387152777777,
+  "prompt_length_in_words": 0.7213107638888889
+ },
+ "xstest_unsafe_vs_safe_auroc": {
+  "bag_of_words_naive_bayes": 0.61307,
+  "first_word_only": 0.52841,
+  "prompt_length_in_words": 0.49163,
+  "n_unsafe": 200,
+  "n_safe": 250
+ },
+ "style_matched": {
+  "first_words": [
+   "write",
+   "create",
+   "give",
+   "develop",
+   "provide"
+  ],
+  "n_harmless_matched_val_test": 69,
+  "bag_of_words_naive_bayes": 0.9879227053140096,
+  "prompt_length_in_words": 0.7027475845410628
+ }
+}
