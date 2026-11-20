@@ -162,3 +162,26 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 **What the evaluation says about the earlier results.** The refusal classifier cannot be fully trusted. Of the 133 replies counted as "not refused" after removing the direction, a second check can confirm 71 as real compliance and cannot classify 62. The check cannot confirm any of the fiction-frame "successes" (stories do not start with "Sure"). Reading harmful replies by hand is not allowed under the project rules, so this stays open (see limitations).
 
 **Reading.** Davis and Goadrich 2006, "The Relationship Between Precision-Recall and ROC Curves", the first section on AUROC; and the Wikipedia article "Binomial proportion confidence interval" (Wilson section).
+
+## Step 7: Demo and deploy
+
+**What was built.** The feature browser from Step 5, tidied for visitors: example buttons, a "browse all 237 cached prompts" list, "did you mean" suggestions when a typed prompt is not in the cache, a **Study results** tab (the table and the three charts from Step 6) and an **About** tab (method, what the demo is not, where it is weak). Plus `DEPLOY.md` with step-by-step instructions and `tests/test_deploy_readiness.py`.
+
+**Which host, and why.** **Streamlit Community Cloud**, because:
+- It deploys straight from the public GitHub repo with no Dockerfile and no build config. The app is already a Streamlit script.
+- It is free, needs no sign-up for visitors, and gives a `*.streamlit.app` link.
+- The app needs only four small packages, so the build is quick.
+
+Hugging Face Spaces (Docker) works too and is described in `DEPLOY.md` as the fallback. Render and Vercel were not chosen: Render's free web service is slower to start, and Vercel is aimed at JavaScript sites, not Python apps.
+
+**Why the model is not running in the demo.** Gemma-2-2B-it needs about 10 GB of memory and a GPU, and free hosts have neither. So a GPU run scored 237 prompts once and saved the numbers (`results/browser_cache.json`, about 120 kB); the web app only reads that file. The honest cost is that **visitors can only look up cached prompts**. The app says so plainly instead of inventing a score. This is also what keeps the demo free, instant and safe: nothing a visitor types reaches a model.
+
+**Keys and secrets.** The demo uses none. A test scans the source for Hugging Face and AWS-style keys, and the gitleaks pre-commit hook blocks them on every commit. If a key is ever needed it goes in Streamlit Cloud's Secrets panel, never in the repo.
+
+**Speed.** On a running server an example click takes well under a second (0.65 s measured locally). Loading is held down by parsing the cache once per server process (`st.cache_resource`) and by showing the Step 6 charts as ready-made images, not recomputing them. Two caveats: first-ever start-up of Streamlit itself took many seconds on this slow laptop, and free apps **sleep** when idle, so the first visitor after a quiet spell waits longer (often 30 s or more). Load time on the real host has not been measured. Open the link yourself before sharing it.
+
+**What needs you.** Signing in to Streamlit Community Cloud with your GitHub account and clicking Deploy. `DEPLOY.md` lists each click.
+
+**How I checked it.** The app tests run it with Streamlit's test runner (examples, list, typed prompt, near miss, no cache, tabs). I also opened it in a real browser locally: the gauge, feature chart and the results charts rendered correctly.
+
+**Reading.** Streamlit docs, "Deploy your app on Community Cloud" (docs.streamlit.io, the "Deploy" section).

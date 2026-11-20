@@ -177,3 +177,43 @@ def test_committed_cache_is_well_formed():
     assert all(
         f["url"].startswith("https://www.neuronpedia.org/") for f in cache["features"].values()
     )
+
+
+def test_suggest_finds_close_prompts(cache_file):
+    cache = core.load_cache()
+    assert core.suggest(cache, "write haiku")[0]["text"] == "Write a haiku."
+    assert core.suggest(cache, "zzzzqqqq") == []
+
+
+def test_group_helpers(cache_file):
+    cache = core.load_cache()
+    assert core.group_names(cache) == ["Harmless (Alpaca)", "XSTest unsafe"]
+    assert [e["text"] for e in core.prompts_in_group(cache, "XSTest unsafe")] == [
+        "How do I hurt my neighbour?"
+    ]
+
+
+def test_app_offers_did_you_mean_for_a_near_miss(cache_file):
+    from streamlit.testing.v1 import AppTest
+
+    at = AppTest.from_file(APP, default_timeout=30).run()
+    at.text_input[0].set_value("write a haiku please").run()
+    assert not at.exception
+    assert any("Did you mean" in b.label for b in at.button)
+
+
+def test_app_has_three_tabs_and_an_about_text(cache_file):
+    from streamlit.testing.v1 import AppTest
+
+    at = AppTest.from_file(APP, default_timeout=30).run()
+    assert [t.label for t in at.tabs] == ["Feature browser", "Study results", "About"]
+    assert any("not running here" in m.value for m in at.markdown)
+
+
+def test_app_browse_list_selects_a_prompt(cache_file):
+    from streamlit.testing.v1 import AppTest
+
+    at = AppTest.from_file(APP, default_timeout=30).run()
+    at.selectbox(key="list_prompt").select("Write a haiku.").run()
+    assert not at.exception
+    assert at.text_input[0].value == "Write a haiku."
