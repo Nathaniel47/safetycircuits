@@ -62,5 +62,5 @@ def test_relative_links_in_the_write_up_files_resolve():
 
 def test_portfolio_card_is_about_120_words():
     text = (ROOT / "PORTFOLIO.md").read_text(encoding="utf-8")
-    card = text.split("## Portfolio card (about 120 words)")[1].split("Links to add")[0]
+    card = text.split("## Portfolio card (about 120 words)")[1].split("Links:")[0]
     assert 100 <= len(card.split()) <= 130
