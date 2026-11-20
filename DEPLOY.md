@@ -1,5 +1,7 @@
 # DEPLOY.md: put the feature browser online for free
 
+**Status: deployed on 2026-11-20 at https://safetycircuits.streamlit.app** (repository `Nathaniel47/safetycircuits`, branch `master`, main file `app/browser.py`, Python 3.11, no secrets, "Make this app public" on). The steps below are how it was done and how to redo it.
+
 The demo is the Streamlit app in `app/browser.py`. It reads precomputed files from `results/`, needs **no GPU, no model, no API key and no sign-up for visitors**. The recommended host is **Streamlit Community Cloud** (free, deploys straight from this GitHub repo). A Hugging Face Spaces alternative is at the end.
 
 ## Before you start (already done)

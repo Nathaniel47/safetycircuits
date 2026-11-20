@@ -2,7 +2,7 @@
 
 **An open study of how Gemma-2-2B-it decides to refuse harmful requests, using a refusal direction, Gemma Scope sparse autoencoders and activation steering, and whether the mechanism carries over to Twi, French and Swahili.** It measures refusal behaviour only and publishes no harmful completions.
 
-- **Demo:** _not deployed yet._ Deploy with [DEPLOY.md](DEPLOY.md), then put the link here.
+- **Demo:** https://safetycircuits.streamlit.app (free Streamlit Community Cloud; it sleeps when idle, so the first load after a quiet spell can take 30 seconds or more). How it was deployed: [DEPLOY.md](DEPLOY.md).
 - **Write-up:** [docs/technical_writeup.md](docs/technical_writeup.md) (about 3 pages). **Portfolio card:** [PORTFOLIO.md](PORTFOLIO.md).
 - **Results table:** [results/results_table.md](results/results_table.md). **Weak points:** [results/limitations.md](results/limitations.md).
 

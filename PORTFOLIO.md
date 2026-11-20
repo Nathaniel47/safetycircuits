@@ -4,7 +4,7 @@
 
 **SafetyCircuits: Interpreting Refusal and Jailbreaks in a Small LLM.** I studied how Google's Gemma-2-2B-it decides to refuse harmful requests. Removing a single direction in its internal activations cut refusals on harmful prompts from 98% to 8%, while removing a random direction changed nothing. I compared eight jailbreak styles, tested sparse-autoencoder features, and showed the same direction works in French and Swahili. For Twi the test was inconclusive: the model barely understands it. I built an interactive browser for exploring prompts and features, and wrote up the weak points honestly: one model, mostly one seed, unverified reply labels. Everything ran on free GPUs, and the demo needs none. Python, PyTorch, Hugging Face, Streamlit, Plotly. Code and write-up are open source.
 
-Links to add: demo (after deploying, see DEPLOY.md), repository https://github.com/Nathaniel47/safetycircuits, write-up `docs/technical_writeup.md`.
+Links: demo https://safetycircuits.streamlit.app, repository https://github.com/Nathaniel47/safetycircuits, write-up `docs/technical_writeup.md`.
 
 ## One sentence for emails to professors
 
