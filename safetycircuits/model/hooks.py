@@ -82,13 +82,19 @@ def adding(model, layer_index: int, direction: torch.Tensor, coefficient: float)
 
 
 @torch.no_grad()
-def layer_residuals_all(model, input_ids, attention_mask, layers) -> dict[int, torch.Tensor]:
+def layer_residuals_all(
+    model, input_ids, attention_mask, layers, drop_first: bool = False
+) -> dict[int, torch.Tensor]:
     """Residual stream after the given layers at every real token: {layer: (n_tokens, d)}.
 
-    Padding positions are dropped, so the result can be fed straight to an SAE.
+    Padding positions are dropped, so the result can be fed straight to an SAE. With drop_first,
+    each prompt's first real token (the BOS token) is dropped too: it has a huge norm that the
+    Gemma Scope SAEs were not trained on.
     """
     captured: dict[int, torch.Tensor] = {}
     keep = attention_mask.bool()
+    if drop_first:
+        keep = keep & (attention_mask.cumsum(dim=1) > 1)
     handles = [
         decoder_layers(model)[i].register_forward_hook(
             lambda _m, _i, out, i=i: captured.__setitem__(i, _first(out)[keep].float())

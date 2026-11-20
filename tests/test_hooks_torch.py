@@ -94,3 +94,12 @@ def test_all_token_capture_drops_padding_and_matches_hidden_states(tiny):
     with torch.no_grad():
         hs = tiny(input_ids=ids, attention_mask=mask, output_hidden_states=True).hidden_states
     assert torch.allclose(out[0][4:], hs[1][1], atol=1e-4)  # second prompt, layer 0
+
+
+def test_all_token_capture_can_drop_the_first_real_token(tiny):
+    from safetycircuits.model.hooks import layer_residuals_all
+
+    ids = torch.randint(1, 100, (2, 6))
+    mask = torch.tensor([[0, 0, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1]])
+    out = layer_residuals_all(tiny, ids, mask, [1], drop_first=True)
+    assert out[1].shape == (8, 32)  # 3 + 5 tokens: each prompt loses its first real token

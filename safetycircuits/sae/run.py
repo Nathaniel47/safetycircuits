@@ -28,12 +28,14 @@ FVU_PROMPTS = 64  # prompts used to measure how well the SAE reconstructs activa
 TOP_K = 20
 
 
-def all_token_acts(model, tok, prompts: list[str], layers) -> dict[int, np.ndarray]:
+def all_token_acts(
+    model, tok, prompts: list[str], layers, drop_first: bool = False
+) -> dict[int, np.ndarray]:
     """Residuals at every token of the chat-formatted prompts, per layer."""
     chunks: dict[int, list[np.ndarray]] = {layer: [] for layer in layers}
     for i in range(0, len(prompts), 8):
         ids, mask = encode(tok, prompts[i : i + 8], model.device)
-        for layer, acts in layer_residuals_all(model, ids, mask, layers).items():
+        for layer, acts in layer_residuals_all(model, ids, mask, layers, drop_first).items():
             chunks[layer].append(acts.cpu().numpy())
     return {layer: np.concatenate(c) for layer, c in chunks.items()}
 
@@ -97,7 +99,15 @@ def main() -> None:
     fvu_prompts = texts(harm, splits["harmful"]["train"], FVU_PROMPTS) + texts(
         less, splits["harmless"]["train"], FVU_PROMPTS
     )
-    fit = {"instruct": sae_fit(saes, all_token_acts(model, tok, fvu_prompts, SAE_LAYERS))}
+
+    def fit_both(m) -> dict:
+        """SAE fit with and without the BOS token (huge norm, not in the SAEs' training data)."""
+        return {
+            "with_bos": sae_fit(saes, all_token_acts(m, tok, fvu_prompts, SAE_LAYERS)),
+            "without_bos": sae_fit(saes, all_token_acts(m, tok, fvu_prompts, SAE_LAYERS, True)),
+        }
+
+    fit = {"instruct": fit_both(model)}
     out = {
         "meta": {
             "model": "google/gemma-2-2b-it",
@@ -124,7 +134,7 @@ def main() -> None:
             # The base model has no chat template, so its own tokenizer cannot format the prompts.
             # The instruct tokenizer has the same vocabulary, so it formats them for both models.
             base, _ = load_model(BASE_MODEL_ID)
-            fit["base"] = sae_fit(saes, all_token_acts(base, tok, fvu_prompts, SAE_LAYERS))
+            fit["base"] = fit_both(base)
         except Exception as err:  # keep the instruct results even if this part fails
             fit["base_error"] = f"{type(err).__name__}: {err}"[:300]
         save()
