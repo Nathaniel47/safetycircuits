@@ -61,7 +61,9 @@ def show_prompt(entry: dict) -> None:
         st.caption(f"Group: {entry['group']}")
     with right:
         rows = core.feature_rows(entry, cache)
-        labels = [f"#{r['feature']}" + (" (refusal)" if r["refusal_feature"] else "") for r in rows]
+        labels = [
+            f"feature {r['feature']}" + (" (refusal)" if r["refusal_feature"] else "") for r in rows
+        ]
         fig = go.Figure(
             go.Bar(
                 x=[r["activation"] for r in rows],
@@ -73,10 +75,14 @@ def show_prompt(entry: dict) -> None:
         fig.update_layout(
             title="Top SAE features at the last prompt token (red = refusal feature)",
             height=340,
-            yaxis={"autorange": "reversed"},
+            yaxis={"autorange": "reversed", "type": "category"},
             margin={"t": 50, "b": 20},
         )
         st.plotly_chart(fig, width="stretch")
+        st.caption(
+            "Red bars are among the 20 features that best separate harmful from harmless prompts. "
+            "On many prompts none of the 10 strongest features are red."
+        )
         links = [f"- feature {r['feature']}: [Neuronpedia]({r['url']})" for r in rows if r["url"]]
         st.markdown("\n".join(links))
     groups: dict[str, list[float]] = {}
