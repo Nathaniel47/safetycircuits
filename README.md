@@ -6,7 +6,9 @@
 - **Write-up:** [docs/technical_writeup.md](docs/technical_writeup.md) (about 3 pages). **Portfolio card:** [PORTFOLIO.md](PORTFOLIO.md).
 - **Results table:** [results/results_table.md](results/results_table.md). **Weak points:** [results/limitations.md](results/limitations.md).
 
-> **GIF placeholder:** record a 10 to 15 second screen capture of the feature browser (click an example, watch the gauge and feature chart) and save it as `docs/demo.gif`, then replace this line with `![Feature browser demo](docs/demo.gif)`.
+![Feature browser demo: pick an example, see the refusal score gauge, the top SAE features and where the prompt sits among all cached prompts](docs/demo.gif)
+
+_The GIF is a slideshow of screenshots of the local app (a harmful-looking XSTest prompt scores 0.87, a harmless one 0.09)._
 
 ## What it found
 
