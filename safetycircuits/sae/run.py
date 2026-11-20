@@ -98,12 +98,6 @@ def main() -> None:
         less, splits["harmless"]["train"], FVU_PROMPTS
     )
     fit = {"instruct": sae_fit(saes, all_token_acts(model, tok, fvu_prompts, SAE_LAYERS))}
-    del model
-    torch.cuda.empty_cache()
-    if args.compare_base:
-        base, base_tok = load_model(BASE_MODEL_ID)
-        fit["base"] = sae_fit(saes, all_token_acts(base, base_tok, fvu_prompts, SAE_LAYERS))
-
     out = {
         "meta": {
             "model": "google/gemma-2-2b-it",
@@ -117,7 +111,23 @@ def main() -> None:
         "sae_fit": fit,
     }
     RESULTS_DIR.mkdir(exist_ok=True)
-    (RESULTS_DIR / "sae_features.json").write_text(json.dumps(out, indent=1) + "\n")
+
+    def save() -> None:
+        text = json.dumps(out, indent=1) + chr(10)
+        (RESULTS_DIR / "sae_features.json").write_text(text)
+
+    save()  # the main result is on disk before the optional base-model comparison starts
+    if args.compare_base:
+        del model
+        torch.cuda.empty_cache()
+        try:
+            # The base model has no chat template, so its own tokenizer cannot format the prompts.
+            # The instruct tokenizer has the same vocabulary, so it formats them for both models.
+            base, _ = load_model(BASE_MODEL_ID)
+            fit["base"] = sae_fit(saes, all_token_acts(base, tok, fvu_prompts, SAE_LAYERS))
+        except Exception as err:  # keep the instruct results even if this part fails
+            fit["base_error"] = f"{type(err).__name__}: {err}"[:300]
+        save()
     print(json.dumps({"sae_fit": fit}, indent=1))
     for layer, v in layers_out.items():
         print(layer, "direction_overlap", v["direction_overlap"])
