@@ -185,3 +185,23 @@ Hugging Face Spaces (Docker) works too and is described in `DEPLOY.md` as the fa
 **How I checked it.** The app tests run it with Streamlit's test runner (examples, list, typed prompt, near miss, no cache, tabs). I also opened it in a real browser locally: the gauge, feature chart and the results charts rendered correctly.
 
 **Reading.** Streamlit docs, "Deploy your app on Community Cloud" (docs.streamlit.io, the "Deploy" section).
+
+## Step 8: README and write-up
+
+**What was written.**
+- `README.md`: purpose, the five headline findings, an architecture diagram, how to run, repository map, data licences, limitations, future work and references.
+- `docs/technical_writeup.md`: a three-page report (problem, method, results with the three charts, limitations, lessons learned, references).
+- `PORTFOLIO.md`: the 119-word card and an email sentence for professors.
+
+**Rules I followed, and why they matter.**
+- **Every number comes from a file in `results/`.** A write-up that quotes numbers from memory drifts from the data. I checked each figure against the saved results.
+- **The headline is the cautious version.** For example "the direction works in French and Swahili" is stated, and Twi is described as inconclusive, not as a safety failure, because the comprehension control and the translation quality explain it.
+- **Limitations sit next to the claims**, in the README table, the write-up and `results/limitations.md`, not only at the bottom.
+- **Citations were verified** against arXiv (titles and first authors for all eight papers), not written from memory.
+
+**Things you must still do yourself.**
+- Deploy (see `DEPLOY.md`) and paste the demo link into the README and `PORTFOLIO.md`.
+- Record the demo GIF (instructions in the README).
+- In the email sentence, replace the last clause with one specific paper or topic from each professor's own page. I did not check their research, so the sentence stays generic.
+
+**How I checked it.** Tests confirm every relative link in the README, write-up and portfolio card points at an existing file, and that the card is about 120 words.

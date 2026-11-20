@@ -45,3 +45,22 @@ def test_gitignore_keeps_env_and_raw_data_out():
 def test_deploy_guide_exists_and_names_the_entry_point():
     text = (ROOT / "DEPLOY.md").read_text(encoding="utf-8")
     assert "app/browser.py" in text and "Streamlit Community Cloud" in text
+
+
+def test_relative_links_in_the_write_up_files_resolve():
+    """README, write-up and portfolio card must not point at missing files.
+
+    docs/demo.gif is the one deliberate placeholder, named only inside the GIF instructions.
+    """
+    for rel in ("README.md", "docs/technical_writeup.md", "PORTFOLIO.md"):
+        path = ROOT / rel
+        for link in re.findall(r"\]\(([^)#]+)\)", path.read_text(encoding="utf-8")):
+            if link.startswith("http") or link == "docs/demo.gif":
+                continue
+            assert (path.parent / link).exists(), f"{rel} links to missing {link}"
+
+
+def test_portfolio_card_is_about_120_words():
+    text = (ROOT / "PORTFOLIO.md").read_text(encoding="utf-8")
+    card = text.split("## Portfolio card (about 120 words)")[1].split("Links to add")[0]
+    assert 100 <= len(card.split()) <= 130
