@@ -1,0 +1,520 @@
+{
+ "meta": {
+  "model": "google/gemma-2-2b-it",
+  "sae_repo": "google/gemma-scope-2b-pt-res (trained on the BASE model)",
+  "seed": 0,
+  "git_commit": "db3aa94347aa82eb6ee5d4452a1577dbc99a714c",
+  "torch": "2.11.0+cu130",
+  "limit": null
+ },
+ "layers": {
+  "17": {
+   "top_features": [
+    {
+     "feature": 10656,
+     "train_auroc": 0.9910228587962964,
+     "val_auroc": 0.9961371527777777,
+     "mean_pos": 40.70166778564453,
+     "mean_neg": 0.8483342528343201,
+     "fire_rate_pos": 0.9884259259259259,
+     "fire_rate_neg": 0.07708333333333334,
+     "cos_with_direction": 0.35706818103790283,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/10656"
+    },
+    {
+     "feature": 8947,
+     "train_auroc": 0.985720486111111,
+     "val_auroc": 1.0,
+     "mean_pos": 20.761415481567383,
+     "mean_neg": 0.045386604964733124,
+     "fire_rate_pos": 0.9722222222222222,
+     "fire_rate_neg": 0.004166666666666667,
+     "cos_with_direction": 0.28668031096458435,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/8947"
+    },
+    {
+     "feature": 11021,
+     "train_auroc": 0.9837046682098767,
+     "val_auroc": 0.9952907986111111,
+     "mean_pos": 20.801841735839844,
+     "mean_neg": 0.9760659337043762,
+     "fire_rate_pos": 0.9861111111111112,
+     "fire_rate_neg": 0.08958333333333333,
+     "cos_with_direction": 0.25275567173957825,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/11021"
+    },
+    {
+     "feature": 3469,
+     "train_auroc": 0.9819830246913581,
+     "val_auroc": 0.9928819444444446,
+     "mean_pos": 14.739480018615723,
+     "mean_neg": 0.1453792303800583,
+     "fire_rate_pos": 0.9675925925925926,
+     "fire_rate_neg": 0.016666666666666666,
+     "cos_with_direction": 0.2142419070005417,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/3469"
+    },
+    {
+     "feature": 2920,
+     "train_auroc": 0.9627845293209878,
+     "val_auroc": 0.9732855902777777,
+     "mean_pos": 10.953032493591309,
+     "mean_neg": 0.014030996710062027,
+     "fire_rate_pos": 0.9259259259259259,
+     "fire_rate_neg": 0.0020833333333333333,
+     "cos_with_direction": 0.1446373164653778,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/2920"
+    },
+    {
+     "feature": 2753,
+     "train_auroc": 0.9550009645061729,
+     "val_auroc": 0.956684027777778,
+     "mean_pos": 10.68959903717041,
+     "mean_neg": 0.09740826487541199,
+     "fire_rate_pos": 0.9166666666666666,
+     "fire_rate_neg": 0.010416666666666666,
+     "cos_with_direction": 0.2176465094089508,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/2753"
+    },
+    {
+     "feature": 9685,
+     "train_auroc": 0.9504316165123456,
+     "val_auroc": 0.9723307291666666,
+     "mean_pos": 22.92073631286621,
+     "mean_neg": 2.7524797916412354,
+     "fire_rate_pos": 0.9791666666666666,
+     "fire_rate_neg": 0.20208333333333334,
+     "cos_with_direction": 0.18712320923805237,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/9685"
+    },
+    {
+     "feature": 9704,
+     "train_auroc": 0.9432243441358024,
+     "val_auroc": 0.9425347222222223,
+     "mean_pos": 9.554709434509277,
+     "mean_neg": 0.023484956473112106,
+     "fire_rate_pos": 0.8888888888888888,
+     "fire_rate_neg": 0.0020833333333333333,
+     "cos_with_direction": 0.15448886156082153,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/9704"
+    },
+    {
+     "feature": 10336,
+     "train_auroc": 0.942356288580247,
+     "val_auroc": 0.9645833333333333,
+     "mean_pos": 8.597084045410156,
+     "mean_neg": 0.2768596112728119,
+     "fire_rate_pos": 0.8981481481481481,
+     "fire_rate_neg": 0.03958333333333333,
+     "cos_with_direction": 0.054600246250629425,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/10336"
+    },
+    {
+     "feature": 10753,
+     "train_auroc": 0.9422984182098765,
+     "val_auroc": 0.9613281250000001,
+     "mean_pos": 12.443925857543945,
+     "mean_neg": 0.3343316912651062,
+     "fire_rate_pos": 0.8981481481481481,
+     "fire_rate_neg": 0.041666666666666664,
+     "cos_with_direction": 0.12402544915676117,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/10753"
+    },
+    {
+     "feature": 15270,
+     "train_auroc": 0.9398148148148148,
+     "val_auroc": 0.9548611111111112,
+     "mean_pos": 11.738421440124512,
+     "mean_neg": 0.0,
+     "fire_rate_pos": 0.8796296296296297,
+     "fire_rate_neg": 0.0,
+     "cos_with_direction": 0.1948070228099823,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/15270"
+    },
+    {
+     "feature": 8051,
+     "train_auroc": 0.9363425925925926,
+     "val_auroc": 0.9340277777777778,
+     "mean_pos": 10.625008583068848,
+     "mean_neg": 0.0,
+     "fire_rate_pos": 0.8726851851851852,
+     "fire_rate_neg": 0.0,
+     "cos_with_direction": 0.1551419347524643,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/8051"
+    },
+    {
+     "feature": 11155,
+     "train_auroc": 0.9339313271604937,
+     "val_auroc": 0.948806423611111,
+     "mean_pos": 17.537012100219727,
+     "mean_neg": 2.473214626312256,
+     "fire_rate_pos": 0.9675925925925926,
+     "fire_rate_neg": 0.17708333333333334,
+     "cos_with_direction": 0.18907958269119263,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/11155"
+    },
+    {
+     "feature": 11093,
+     "train_auroc": 0.9184220679012346,
+     "val_auroc": 0.9457031250000002,
+     "mean_pos": 8.445538520812988,
+     "mean_neg": 1.028585433959961,
+     "fire_rate_pos": 0.9166666666666666,
+     "fire_rate_neg": 0.13958333333333334,
+     "cos_with_direction": 0.043078869581222534,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/11093"
+    },
+    {
+     "feature": 9726,
+     "train_auroc": 0.9184076003086419,
+     "val_auroc": 0.9273003472222222,
+     "mean_pos": 14.585381507873535,
+     "mean_neg": 2.2765960693359375,
+     "fire_rate_pos": 0.9513888888888888,
+     "fire_rate_neg": 0.20833333333333334,
+     "cos_with_direction": 0.11024749279022217,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/9726"
+    },
+    {
+     "feature": 2787,
+     "train_auroc": 0.9179615162037037,
+     "val_auroc": 0.9391493055555556,
+     "mean_pos": 10.65262222290039,
+     "mean_neg": 0.08103635907173157,
+     "fire_rate_pos": 0.8402777777777778,
+     "fire_rate_neg": 0.010416666666666666,
+     "cos_with_direction": 0.12454347312450409,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/2787"
+    },
+    {
+     "feature": 2081,
+     "train_auroc": 0.9179494598765433,
+     "val_auroc": 0.9396267361111114,
+     "mean_pos": 9.061148643493652,
+     "mean_neg": 0.23980705440044403,
+     "fire_rate_pos": 0.8587962962962963,
+     "fire_rate_neg": 0.020833333333333332,
+     "cos_with_direction": 0.17346718907356262,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/2081"
+    },
+    {
+     "feature": 3020,
+     "train_auroc": 0.9090663580246913,
+     "val_auroc": 0.9207031250000001,
+     "mean_pos": 7.791525840759277,
+     "mean_neg": 0.786738395690918,
+     "fire_rate_pos": 0.8796296296296297,
+     "fire_rate_neg": 0.058333333333333334,
+     "cos_with_direction": 0.11348782479763031,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/3020"
+    },
+    {
+     "feature": 12916,
+     "train_auroc": 0.9004557291666666,
+     "val_auroc": 0.9131944444444444,
+     "mean_pos": 7.854842662811279,
+     "mean_neg": 0.09888353943824768,
+     "fire_rate_pos": 0.8078703703703703,
+     "fire_rate_neg": 0.014583333333333334,
+     "cos_with_direction": 0.12891891598701477,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/12916"
+    },
+    {
+     "feature": 11451,
+     "train_auroc": 0.9001736111111112,
+     "val_auroc": 0.9131944444444444,
+     "mean_pos": 6.417816162109375,
+     "mean_neg": 0.011223752051591873,
+     "fire_rate_pos": 0.8009259259259259,
+     "fire_rate_neg": 0.0020833333333333333,
+     "cos_with_direction": 0.17855247855186462,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/17-gemmascope-res-16k/11451"
+    }
+   ],
+   "direction_overlap": 0.5927068384615446,
+   "cos_with_saved_direction": null,
+   "sae_n_features": 16384
+  },
+  "24": {
+   "top_features": [
+    {
+     "feature": 9228,
+     "train_auroc": 0.9980372299382717,
+     "val_auroc": 0.9990885416666665,
+     "mean_pos": 134.08888244628906,
+     "mean_neg": 10.907602310180664,
+     "fire_rate_pos": 1.0,
+     "fire_rate_neg": 0.2875,
+     "cos_with_direction": 0.29245662689208984,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/9228"
+    },
+    {
+     "feature": 10878,
+     "train_auroc": 0.9949604552469135,
+     "val_auroc": 0.9985243055555555,
+     "mean_pos": 44.79703903198242,
+     "mean_neg": 1.520917296409607,
+     "fire_rate_pos": 0.9930555555555556,
+     "fire_rate_neg": 0.075,
+     "cos_with_direction": 0.2135004699230194,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/10878"
+    },
+    {
+     "feature": 4714,
+     "train_auroc": 0.9946421682098766,
+     "val_auroc": 0.9962673611111111,
+     "mean_pos": 43.010807037353516,
+     "mean_neg": 9.271988868713379,
+     "fire_rate_pos": 1.0,
+     "fire_rate_neg": 0.4708333333333333,
+     "cos_with_direction": 0.07252757996320724,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/4714"
+    },
+    {
+     "feature": 8265,
+     "train_auroc": 0.9891348379629631,
+     "val_auroc": 0.9799045138888888,
+     "mean_pos": 40.35302734375,
+     "mean_neg": 2.358955144882202,
+     "fire_rate_pos": 0.9907407407407407,
+     "fire_rate_neg": 0.10416666666666667,
+     "cos_with_direction": 0.1130208671092987,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/8265"
+    },
+    {
+     "feature": 13237,
+     "train_auroc": 0.9889419367283951,
+     "val_auroc": 0.9925781249999999,
+     "mean_pos": 22.033470153808594,
+     "mean_neg": 0.5642277002334595,
+     "fire_rate_pos": 0.9884259259259259,
+     "fire_rate_neg": 0.03333333333333333,
+     "cos_with_direction": 0.08508709073066711,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/13237"
+    },
+    {
+     "feature": 786,
+     "train_auroc": 0.9832995756172841,
+     "val_auroc": 0.9962239583333334,
+     "mean_pos": 39.079708099365234,
+     "mean_neg": 0.29667696356773376,
+     "fire_rate_pos": 0.9675925925925926,
+     "fire_rate_neg": 0.016666666666666666,
+     "cos_with_direction": 0.1396006941795349,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/786"
+    },
+    {
+     "feature": 15400,
+     "train_auroc": 0.9819203317901235,
+     "val_auroc": 0.9942057291666667,
+     "mean_pos": 52.257049560546875,
+     "mean_neg": 0.8774417638778687,
+     "fire_rate_pos": 0.9722222222222222,
+     "fire_rate_neg": 0.03333333333333333,
+     "cos_with_direction": 0.17365895211696625,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/15400"
+    },
+    {
+     "feature": 4253,
+     "train_auroc": 0.9787205825617286,
+     "val_auroc": 0.9965277777777778,
+     "mean_pos": 24.008771896362305,
+     "mean_neg": 0.18230660259723663,
+     "fire_rate_pos": 0.9652777777777778,
+     "fire_rate_neg": 0.00625,
+     "cos_with_direction": 0.11826926469802856,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/4253"
+    },
+    {
+     "feature": 6495,
+     "train_auroc": 0.9767505787037037,
+     "val_auroc": 0.9952039930555556,
+     "mean_pos": 60.38606643676758,
+     "mean_neg": 0.6717422008514404,
+     "fire_rate_pos": 0.9560185185185185,
+     "fire_rate_neg": 0.029166666666666667,
+     "cos_with_direction": 0.15964236855506897,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/6495"
+    },
+    {
+     "feature": 7194,
+     "train_auroc": 0.9759114583333334,
+     "val_auroc": 0.9631076388888888,
+     "mean_pos": 22.94670295715332,
+     "mean_neg": 0.792767345905304,
+     "fire_rate_pos": 0.9629629629629629,
+     "fire_rate_neg": 0.04791666666666667,
+     "cos_with_direction": 0.04607951641082764,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/7194"
+    },
+    {
+     "feature": 8473,
+     "train_auroc": 0.9756968557098767,
+     "val_auroc": 0.9886284722222223,
+     "mean_pos": 26.58626365661621,
+     "mean_neg": 1.2470022439956665,
+     "fire_rate_pos": 0.9791666666666666,
+     "fire_rate_neg": 0.06041666666666667,
+     "cos_with_direction": 0.08881089091300964,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/8473"
+    },
+    {
+     "feature": 13766,
+     "train_auroc": 0.9756703317901235,
+     "val_auroc": 0.9932508680555555,
+     "mean_pos": 26.253015518188477,
+     "mean_neg": 0.4838739335536957,
+     "fire_rate_pos": 0.9583333333333334,
+     "fire_rate_neg": 0.027083333333333334,
+     "cos_with_direction": 0.08326804637908936,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/13766"
+    },
+    {
+     "feature": 1047,
+     "train_auroc": 0.9731505594135802,
+     "val_auroc": 0.9824435763888888,
+     "mean_pos": 26.71806526184082,
+     "mean_neg": 0.3140348792076111,
+     "fire_rate_pos": 0.9513888888888888,
+     "fire_rate_neg": 0.01875,
+     "cos_with_direction": 0.08909735828638077,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/1047"
+    },
+    {
+     "feature": 1380,
+     "train_auroc": 0.9722849151234569,
+     "val_auroc": 0.9730902777777778,
+     "mean_pos": 21.23625946044922,
+     "mean_neg": 0.31635981798171997,
+     "fire_rate_pos": 0.9560185185185185,
+     "fire_rate_neg": 0.016666666666666666,
+     "cos_with_direction": 0.08744124323129654,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/1380"
+    },
+    {
+     "feature": 8169,
+     "train_auroc": 0.9681086033950618,
+     "val_auroc": 0.9951171875,
+     "mean_pos": 24.637588500976562,
+     "mean_neg": 0.2856675982475281,
+     "fire_rate_pos": 0.9398148148148148,
+     "fire_rate_neg": 0.016666666666666666,
+     "cos_with_direction": 0.19204109907150269,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/8169"
+    },
+    {
+     "feature": 13560,
+     "train_auroc": 0.9676311728395062,
+     "val_auroc": 0.9797743055555556,
+     "mean_pos": 25.6259765625,
+     "mean_neg": 0.64430171251297,
+     "fire_rate_pos": 0.9444444444444444,
+     "fire_rate_neg": 0.0375,
+     "cos_with_direction": 0.13042740523815155,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/13560"
+    },
+    {
+     "feature": 12562,
+     "train_auroc": 0.9628231095679012,
+     "val_auroc": 0.9684027777777777,
+     "mean_pos": 51.38999557495117,
+     "mean_neg": 26.00042724609375,
+     "fire_rate_pos": 0.9976851851851852,
+     "fire_rate_neg": 0.8625,
+     "cos_with_direction": 0.07397807389497757,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/12562"
+    },
+    {
+     "feature": 13654,
+     "train_auroc": 0.9628086419753085,
+     "val_auroc": 0.984027777777778,
+     "mean_pos": 23.865550994873047,
+     "mean_neg": 2.637110471725464,
+     "fire_rate_pos": 0.9652777777777778,
+     "fire_rate_neg": 0.15416666666666667,
+     "cos_with_direction": 0.05287201330065727,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/13654"
+    },
+    {
+     "feature": 1168,
+     "train_auroc": 0.9614173418209878,
+     "val_auroc": 0.9822482638888891,
+     "mean_pos": 28.95775032043457,
+     "mean_neg": 2.369065999984741,
+     "fire_rate_pos": 0.9606481481481481,
+     "fire_rate_neg": 0.11041666666666666,
+     "cos_with_direction": 0.08200167864561081,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/1168"
+    },
+    {
+     "feature": 15076,
+     "train_auroc": 0.9612557870370372,
+     "val_auroc": 0.9680989583333334,
+     "mean_pos": 19.08684539794922,
+     "mean_neg": 0.7139672636985779,
+     "fire_rate_pos": 0.9375,
+     "fire_rate_neg": 0.04583333333333333,
+     "cos_with_direction": 0.05487799271941185,
+     "neuronpedia": "https://www.neuronpedia.org/gemma-2-2b/24-gemmascope-res-16k/15076"
+    }
+   ],
+   "direction_overlap": 0.46843626462067717,
+   "cos_with_saved_direction": 1.0,
+   "sae_n_features": 16384
+  }
+ },
+ "sae_fit": {
+  "instruct": {
+   "with_bos": {
+    "17": {
+     "fvu": 8.976160049438477,
+     "mean_l0": 414.7853270690278,
+     "n_tokens": 2767
+    },
+    "24": {
+     "fvu": 4.600666522979736,
+     "mean_l0": 346.23780267437655,
+     "n_tokens": 2767
+    }
+   },
+   "without_bos": {
+    "17": {
+     "fvu": 0.25656113028526306,
+     "mean_l0": 105.13035240621447,
+     "n_tokens": 2639
+    },
+    "24": {
+     "fvu": 0.3389873504638672,
+     "mean_l0": 85.9810534293293,
+     "n_tokens": 2639
+    }
+   }
+  },
+  "base": {
+   "with_bos": {
+    "17": {
+     "fvu": 8.970921516418457,
+     "mean_l0": 354.00397542464765,
+     "n_tokens": 2767
+    },
+    "24": {
+     "fvu": 4.139686107635498,
+     "mean_l0": 280.9147090711962,
+     "n_tokens": 2767
+    }
+   },
+   "without_bos": {
+    "17": {
+     "fvu": 0.2720436453819275,
+     "mean_l0": 66.04054566123531,
+     "n_tokens": 2639
+    },
+    "24": {
+     "fvu": 0.3140694200992584,
+     "mean_l0": 57.11671087533156,
+     "n_tokens": 2639
+    }
+   }
+  }
+ }
+}

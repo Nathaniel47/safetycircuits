@@ -2,7 +2,7 @@
 
 An open study of how Gemma-2-2B-it decides to refuse, using a refusal direction, Gemma Scope sparse autoencoders and activation steering, and whether that mechanism carries over to Twi, French and Swahili. It measures refusal behaviour only and publishes no harmful completions.
 
-Status: steps 2-5 code done. Direction results are in results/; the SAE, jailbreak, cross-lingual and browser-cache GPU runs are still to do. See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
+Status: steps 2-5 done, with results in results/ (see results/step5_results_summary.md). Next: step 6 (evaluation). See [PLAN.md](PLAN.md) for the design and [BUILD_STEPS.md](BUILD_STEPS.md) for progress.
 
 ## Run locally (laptop: tests and the feature browser, no GPU)
 
@@ -41,7 +41,7 @@ Model runs need a 16 GB GPU, so they run in notebooks under `notebooks/` and sav
 streamlit run app/browser.py
 ```
 
-It reads `results/browser_cache.json` (no GPU needed). Build the cache on Kaggle with notebooks 02 to 05 in `notebooks/` (`02` SAE features, `03` jailbreaks, `04` cross-lingual, `05` browser cache). Without the cache the app shows setup instructions. Typing a prompt that is not in the cache needs a live model, which is not wired in: pick a cached prompt instead.
+It reads `results/browser_cache.json` (237 prompts, committed; no GPU needed). To rebuild it, run notebooks 02 to 05 in `notebooks/` on Kaggle (`02` SAE features, `03` jailbreaks, `04` cross-lingual, `05` browser cache). Without the cache the app shows setup instructions. Typing a prompt that is not in the cache needs a live model, which is not wired in: pick a cached prompt instead.
 
 ## Data and licences
 

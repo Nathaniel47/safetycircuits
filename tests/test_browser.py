@@ -163,3 +163,17 @@ def test_app_without_cache_shows_instructions(tmp_path, monkeypatch):
     at = AppTest.from_file(APP, default_timeout=30).run()
     assert not at.exception
     assert any("No cache yet" in i.value for i in at.info)
+
+
+def test_committed_cache_is_well_formed():
+    cache = core.load_cache(ROOT / "results" / "browser_cache.json")
+    if cache is None:
+        pytest.skip("cache not built yet")
+    assert cache["meta"]["n_prompts"] == len(cache["prompts"]) > 100
+    for entry in cache["prompts"]:
+        assert entry["text"] and isinstance(entry["score"], float)
+        assert all(str(f) in cache["features"] for f, _ in entry["top_features"])
+    assert any(f["is_refusal_feature"] for f in cache["features"].values())
+    assert all(
+        f["url"].startswith("https://www.neuronpedia.org/") for f in cache["features"].values()
+    )

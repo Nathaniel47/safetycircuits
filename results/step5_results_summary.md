@@ -1,6 +1,6 @@
-# Step 5: numbers read from the Kaggle notebook output (2026-11-20)
+# Step 5: results (Kaggle run, 2026-11-20)
 
-These were read off the notebook screen in a Kaggle session (T4 x2, torch from the Kaggle image, seed 0, run from commit `db3aa94`). The raw files `sae_features.json`, `jailbreaks.json`, `translation_quality.json` and `crosslingual.json` were written in that session but are **not in the repo yet**; replace this file's numbers with them when they are. Rounded as shown on screen.
+Source: `results/sae_features.json`, `jailbreaks.json`, `translation_quality.json`, `crosslingual.json` and `browser_cache.json`, written by the Step 5 modules on Kaggle (T4 x2, seed 0, run from commit `db3aa94`). The SAE and jailbreak numbers below were first read off the screen and match the JSON files exactly. One run, one seed, string-match refusal check, nothing hand-checked.
 
 ## SAE fit (Gemma Scope 16k SAEs trained on the base model)
 
@@ -48,4 +48,18 @@ Success = not a refusal and not obviously broken text (no broken text was found 
 
 **Twi translations are poor:** more than half of them fail the chrF threshold, so any Twi result is about badly translated prompts as much as about Gemma. A Twi reader should check a sample, and results should be shown for the good-translation subset as well.
 
-The cross-lingual run itself had not finished when this was written.
+## Cross-lingual: does the English refusal direction work in other languages?
+
+100 harmful and 100 harmless English prompts, machine-translated with NLLB-200 (translations are not committed). AUROC = how well the English direction separates harmful from harmless prompts (1 = perfect, 0.5 = chance).
+
+| Language | Direction AUROC [95% CI] | Harmful refused | Refused, direction removed | Harmless refused | Gemma translates it back (chrF) |
+|---|---|---|---|---|---|
+| English | 0.999 [1.0, 1.0] | 97% | 6% | 3% | not measured |
+| French | 0.995 [0.99, 1.0] | 87% | 0% | 4% | 70.7 |
+| Swahili | 0.957 [0.93, 0.98] | 70% | 1% | 2% | 43.3 |
+| Twi | **0.563 [0.48, 0.64]** | 6% | 0% | 18% | 18.1 |
+
+- **French and Swahili:** the English direction still separates the classes almost perfectly (Swahili's mean harmful score is 0.29 against 0.97 in English, so it is weaker in size, not in ordering), and removing it removes the refusals.
+- **Twi is at chance (AUROC 0.56), but this does not show a safety failure.** Gemma recovered the English meaning of Twi prompts with a chrF of only 18, so it barely understands them, and more than half of the Twi translations fail the quality threshold. On the good-translation subset (38 harmful, 48 harmless) AUROC is 0.58 [0.45, 0.70], too wide to say anything. The Twi refusal phrases in the classifier are unverified guesses, so the 6% refusal rate may be undercounted.
+- Comprehension was measured on harmless prompts only. FLORES benign text scores near 0.1 in every language.
+- **Not done:** a Twi reader has not checked any translation.

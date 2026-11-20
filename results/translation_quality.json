@@ -1,0 +1,30 @@
+{
+ "model": "facebook/nllb-200-distilled-600M",
+ "chrf_good_threshold": 35.0,
+ "quality": {
+  "twi_harmful": {
+   "mean_backtranslation_chrf": 35.3968188447331,
+   "share_good": 0.38
+  },
+  "twi_harmless": {
+   "mean_backtranslation_chrf": 36.5051672534589,
+   "share_good": 0.48
+  },
+  "french_harmful": {
+   "mean_backtranslation_chrf": 79.26538059736657,
+   "share_good": 1.0
+  },
+  "french_harmless": {
+   "mean_backtranslation_chrf": 78.24474943560074,
+   "share_good": 1.0
+  },
+  "swahili_harmful": {
+   "mean_backtranslation_chrf": 64.29118811655661,
+   "share_good": 0.97
+  },
+  "swahili_harmless": {
+   "mean_backtranslation_chrf": 60.73497408681286,
+   "share_good": 0.92
+  }
+ }
+}

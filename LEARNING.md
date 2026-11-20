@@ -69,7 +69,7 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 
 ## Step 5.1: Sparse-autoencoder feature analysis
 
-**Status: code and tests done; the GPU run (`notebooks/02_sae_features.ipynb`) has not happened, so there are no feature results yet.**
+**Status: done and run on Kaggle; results in `results/sae_features.json` and `results/step5_results_summary.md`.** Result: with the BOS token removed, the base-model SAEs reconstruct the instruct model's activations about as well as the base model's (FVU 0.26 and 0.34 against 0.27 and 0.31), so they transfer. The BOS token must be excluded (it pushed FVU above 1 on both models).
 
 **The idea in plain English.** The refusal direction (step 4) is one arrow in a 2,304-number space. It says *that* the model is about to refuse, but not *what is going on inside*. A sparse autoencoder (SAE) takes the same 2,304 numbers and re-writes them as activations of 16,384 "features", most of which are zero at any moment. Researchers often find that individual features look like single concepts ("requests for weapons", "polite apologies"). Gemma Scope is Google's free set of these SAEs for Gemma 2.
 
@@ -89,7 +89,7 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 
 ## Step 5.2: Jailbreak study
 
-**Status: code and tests done; the GPU run (`notebooks/03_jailbreaks.ipynb`) has not happened, so there are no jailbreak results yet.**
+**Status: done and run on Kaggle; see `results/jailbreaks.json` and `results/step5_results_summary.md`.** Result: fiction frame got 43% of harmful prompts past the refusal (baseline 2%), refusal suppression 26%, and the strongest ones also lowered the refusal score most. Research framing got 15% through with the score unchanged, so the direction does not explain every jailbreak. The two control suffixes alone gave 6%, so small gaps are noise.
 
 **The question.** A jailbreak is a way of wording a request so that the model complies when it would normally refuse. If refusal really runs through one direction (step 4), a successful jailbreak should push the model's activations *away* from that direction. This study tests that rather than assuming it.
 
@@ -108,7 +108,7 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 
 ## Step 5.3: Cross-lingual test (Twi, French, Swahili)
 
-**Status: code and tests done; the GPU run (`notebooks/04_crosslingual.ipynb`) has not happened, so there are no cross-lingual results yet.**
+**Status: done and run on Kaggle; see `results/crosslingual.json` and `results/step5_results_summary.md`.** Result: the English direction separates harmful from harmless almost perfectly in French (AUROC 0.995) and Swahili (0.957) but sits at chance in Twi (0.56). Gemma barely understands Twi (it translates it back with chrF 18) and the Twi translations are poor, so that is not evidence of a safety failure.
 
 **The question.** The refusal direction was found from English prompts. Does the same arrow, unchanged, also separate harmful from harmless prompts written in Twi, French and Swahili? Safety training is known to transfer worse to languages with less data, so Twi is the interesting case.
 
@@ -128,7 +128,7 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 
 ## Step 5.4: Interactive feature browser
 
-**Status: the app and cache builder are done and tested; the cache itself has not been built (needs a GPU run, `notebooks/05_browser_cache.ipynb`), so the app currently shows setup instructions.**
+**Status: done. The cache (237 prompts) was built on Kaggle and is in `results/browser_cache.json`, so the app works out of the box.**
 
 **What it does.** Pick or type a prompt and see: a gauge with its refusal score (0 = like a typical harmless prompt, 1 = like a typical harmful one), whether Gemma refused it, a bar chart of the ten SAE features that fire most at the end of the prompt (refusal features in red, each linked to Neuronpedia), and a box plot showing where the prompt sits among all cached prompts. A second tab shows the study results (refusal direction table, jailbreak success rates, cross-lingual AUROC) from whichever result files exist.
 

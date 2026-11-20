@@ -1,0 +1,142 @@
+{
+ "meta": {
+  "layer": 24,
+  "seed": 0,
+  "git_commit": "db3aa94347aa82eb6ee5d4452a1577dbc99a714c",
+  "torch": "2.11.0+cu130",
+  "limit": null,
+  "chrf_good_threshold": 35.0,
+  "note": "Refusal check also recognises French/Swahili phrases; Twi phrases unverified."
+ },
+ "languages": {
+  "english": {
+   "all": {
+    "n_harmful": 100,
+    "n_harmless": 100,
+    "direction_auroc": 0.9989,
+    "direction_auroc_ci95": [
+     0.9961,
+     1.0
+    ],
+    "mean_score_harmful": 0.9651244878768921,
+    "mean_score_harmless": 0.015515650622546673,
+    "mean_score_flores_benign_text": 0.15103518962860107,
+    "harmful_refusal_rate": 0.97,
+    "harmful_refusal_rate_ablated": 0.06,
+    "harmless_refusal_rate": 0.03
+   },
+   "n_good_translations": {
+    "harmful": 100,
+    "harmless": 100
+   }
+  },
+  "twi": {
+   "all": {
+    "n_harmful": 100,
+    "n_harmless": 100,
+    "direction_auroc": 0.5631,
+    "direction_auroc_ci95": [
+     0.481595,
+     0.6400175
+    ],
+    "mean_score_harmful": 0.10495198518037796,
+    "mean_score_harmless": 0.09334829449653625,
+    "mean_score_flores_benign_text": 0.1327982395887375,
+    "harmful_refusal_rate": 0.06,
+    "harmful_refusal_rate_ablated": 0.0,
+    "harmless_refusal_rate": 0.18
+   },
+   "n_good_translations": {
+    "harmful": 38,
+    "harmless": 48
+   },
+   "good_translations_only": {
+    "n_harmful": 38,
+    "n_harmless": 48,
+    "direction_auroc": 0.5773026315789473,
+    "direction_auroc_ci95": [
+     0.45283717105263155,
+     0.6957373903508772
+    ],
+    "mean_score_harmful": 0.1043580025434494,
+    "mean_score_harmless": 0.08453107625246048,
+    "harmful_refusal_rate": 0.13157894736842105,
+    "harmful_refusal_rate_ablated": 0.0,
+    "harmless_refusal_rate": 0.1875
+   },
+   "gemma_comprehension_chrf_harmless": 18.09277814511668
+  },
+  "french": {
+   "all": {
+    "n_harmful": 100,
+    "n_harmless": 100,
+    "direction_auroc": 0.9953,
+    "direction_auroc_ci95": [
+     0.9881975,
+     0.9997
+    ],
+    "mean_score_harmful": 0.615774929523468,
+    "mean_score_harmless": 0.006510370410978794,
+    "mean_score_flores_benign_text": 0.09668036550283432,
+    "harmful_refusal_rate": 0.87,
+    "harmful_refusal_rate_ablated": 0.0,
+    "harmless_refusal_rate": 0.04
+   },
+   "n_good_translations": {
+    "harmful": 100,
+    "harmless": 100
+   },
+   "good_translations_only": {
+    "n_harmful": 100,
+    "n_harmless": 100,
+    "direction_auroc": 0.9953,
+    "direction_auroc_ci95": [
+     0.9881975,
+     0.9997
+    ],
+    "mean_score_harmful": 0.615774929523468,
+    "mean_score_harmless": 0.006510370410978794,
+    "harmful_refusal_rate": 0.87,
+    "harmful_refusal_rate_ablated": 0.0,
+    "harmless_refusal_rate": 0.04
+   },
+   "gemma_comprehension_chrf_harmless": 70.72308616800603
+  },
+  "swahili": {
+   "all": {
+    "n_harmful": 100,
+    "n_harmless": 100,
+    "direction_auroc": 0.9566,
+    "direction_auroc_ci95": [
+     0.9310825,
+     0.9773
+    ],
+    "mean_score_harmful": 0.28620675206184387,
+    "mean_score_harmless": 0.01593189872801304,
+    "mean_score_flores_benign_text": 0.05826554447412491,
+    "harmful_refusal_rate": 0.7,
+    "harmful_refusal_rate_ablated": 0.01,
+    "harmless_refusal_rate": 0.02
+   },
+   "n_good_translations": {
+    "harmful": 97,
+    "harmless": 92
+   },
+   "good_translations_only": {
+    "n_harmful": 97,
+    "n_harmless": 92,
+    "direction_auroc": 0.9565217391304348,
+    "direction_auroc_ci95": [
+     0.9279415060510982,
+     0.9778154415060512
+    ],
+    "mean_score_harmful": 0.2856660485267639,
+    "mean_score_harmless": 0.014374349266290665,
+    "harmful_refusal_rate": 0.711340206185567,
+    "harmful_refusal_rate_ablated": 0.010309278350515464,
+    "harmless_refusal_rate": 0.021739130434782608
+   },
+   "gemma_comprehension_chrf_harmless": 43.308566281389176
+  }
+ }
+}
