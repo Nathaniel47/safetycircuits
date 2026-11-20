@@ -18,3 +18,6 @@ select = ["E", "F", "I", "B", "UP"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-q"
+
+[tool.ruff.lint.per-file-ignores]
+"safetycircuits/evaluation/report.py" = ["E501", "UP031"]  # long markdown table strings
