@@ -1,5 +1,5 @@
 # Runtime for the Streamlit feature browser (runs from precomputed results, no GPU, no torch)
-streamlit>=1.35
+streamlit>=1.50
 plotly>=5.20
 numpy>=1.26
 pandas>=2.2

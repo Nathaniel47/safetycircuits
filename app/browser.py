@@ -36,7 +36,7 @@ def show_prompt(entry: dict) -> None:
             )
         )
         fig.update_layout(height=260, margin={"t": 60, "b": 0, "l": 20, "r": 20})
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         st.write(f"Score {entry['score']:.2f}: {core.score_band(entry['score'])}.")
         if entry.get("refused") is not None:
             st.write("Model reply: **" + ("refused**" if entry["refused"] else "answered**"))
@@ -58,7 +58,7 @@ def show_prompt(entry: dict) -> None:
             yaxis={"autorange": "reversed"},
             margin={"t": 50, "b": 20},
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         links = [f"- feature {r['feature']}: [Neuronpedia]({r['url']})" for r in rows if r["url"]]
         st.markdown("\n".join(links))
     groups: dict[str, list[float]] = {}
@@ -69,7 +69,7 @@ def show_prompt(entry: dict) -> None:
         boxes.add_trace(go.Box(x=scores, name=name, boxpoints=False, orientation="h"))
     boxes.add_vline(x=entry["score"], line_color="#c0392b", annotation_text="this prompt")
     boxes.update_layout(title="Where this prompt sits among the cached prompts", height=360)
-    st.plotly_chart(boxes, use_container_width=True)
+    st.plotly_chart(boxes, width="stretch")
 
 
 with tab_browser:
@@ -131,7 +131,7 @@ with tab_results:
         st.subheader("Jailbreaks: share of harmful prompts answered instead of refused")
         fig = go.Figure(go.Bar(x=list(summ), y=[summ[n]["success_rate"] for n in summ]))
         fig.update_layout(yaxis_title="success rate", height=340)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     if "crosslingual" in results:
         langs = results["crosslingual"]["languages"]
         st.subheader("Does the English refusal direction work in other languages?")
@@ -139,7 +139,7 @@ with tab_results:
             go.Bar(x=list(langs), y=[v["all"]["direction_auroc"] for v in langs.values()])
         )
         fig.update_layout(yaxis_title="AUROC (0.5 = chance)", yaxis_range=[0, 1], height=320)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         st.caption(
             "Check the comprehension control in results/crosslingual.json before reading Twi."
         )
