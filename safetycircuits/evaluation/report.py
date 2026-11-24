@@ -22,6 +22,7 @@ def load(results: Path = RESULTS_DIR) -> dict[str, dict]:
         "direction": "refusal_direction.json",
         "baselines": "baselines.json",
         "evaluation": "evaluation.json",
+        "early_layers": "early_layers.json",
         "jailbreaks": "jailbreaks.json",
         "crosslingual": "crosslingual.json",
         "sae": "sae_features.json",
@@ -211,6 +212,26 @@ def table_text(r: dict) -> str:
         ]
         for layer in [k for k in t if k.isdigit()]:
             lines.append(f"| {layer} | {ci(t[layer]['refusal_after_ablation'])} |")
+        lines.append("")
+
+    if "early_layers" in r:
+        el = r["early_layers"]
+        lines += [
+            "## 3b. Early layers on the test split (144 harmful prompts)",
+            "",
+            f"No intervention: {ci(el['baseline_refusal'])} refused. Direction fitted and removed at each layer. "
+            "`Clear compliance` = a non-refused reply that opens like a helpful answer (second check); "
+            "a low share means many non-refusals cannot be read as real compliance and may be broken text.",
+            "",
+            "| Layer | Refused after removal [95% CI] | Not refused | Clear compliance | Unclear |",
+            "|---|---|---|---|---|",
+        ]
+        for layer, v in el["layers"].items():
+            a2 = v["agreement"]
+            lines.append(
+                f"| {layer} | {ci(v['refusal_after_ablation'])} | {a2['not_refused']} | "
+                f"{a2['clear_compliance']} ({pct(a2['clear_share_of_not_refused'], 0)}) | {a2['unclear']} |"
+            )
         lines.append("")
 
     if ev and bl:

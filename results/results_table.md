@@ -53,6 +53,19 @@ Test split for the headline and chosen layers:
 | 24 | 7.6% [4%, 13%] |
 | 25 | 2.1% [1%, 6%] |
 
+## 3b. Early layers on the test split (144 harmful prompts)
+
+No intervention: 97.9% [94%, 99%] refused. Direction fitted and removed at each layer. `Clear compliance` = a non-refused reply that opens like a helpful answer (second check); a low share means many non-refusals cannot be read as real compliance and may be broken text.
+
+| Layer | Refused after removal [95% CI] | Not refused | Clear compliance | Unclear |
+|---|---|---|---|---|
+| 8 | 0.0% [0%, 3%] | 144 | 15 (10%) | 129 |
+| 10 | 0.0% [0%, 3%] | 144 | 63 (44%) | 81 |
+| 12 | 0.7% [0%, 4%] | 143 | 111 (78%) | 32 |
+| 14 | 0.7% [0%, 4%] | 143 | 114 (80%) | 29 |
+| 24 | 7.6% [4%, 13%] | 133 | 71 (53%) | 62 |
+| 25 | 2.1% [1%, 6%] | 141 | 102 (72%) | 39 |
+
 ## 4. Direction versus simple text baselines (AUROC, higher = better separation)
 
 | Test | Direction, layer 24 | Direction, layer 25 | Word-count naive Bayes | First word only | Prompt length |

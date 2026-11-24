@@ -11,8 +11,9 @@ Everything here is Gemma-2-2B-it, one prompt set, one seed for the main runs, an
 
 ## 2. The layer choice is not settled
 
-- Removing the direction fitted at layers 8, 10, 12, 14 and 25 left 0% of validation prompts refused. Layers 16 to 24 did worse (4% to 26%). Layer 24 (the headline, used throughout) is not the best. Five layers tie at 0%, and the code picked layer 25 by an arbitrary tie-break.
-- Only layers 24 and 25 were run on the test split, so the early-layer results rest on 144 validation prompts and are unconfirmed. **Improvement:** run the test split for all tied layers, and check the replies are coherent, since removing a direction from an early layer could break the model rather than just remove refusal.
+- Removing the direction fitted at layers 8, 10, 12, 14 and 25 left 0% of validation prompts refused. Layers 16 to 24 did worse (4% to 26%). Layer 24 (the headline, used throughout) is not the best.
+- **Confirmed on the test split (2026-11-24, `results/early_layers.json`):** removing the direction fitted at layer 12 or 14 leaves 0.7% of harmful prompts refused (1/144), against 7.6% at layer 24 and 2.1% at layer 25. Their non-refusals also look the most like real compliance (78% and 80% open like a helpful answer, against 53% at layer 24). Layers 8 and 10 leave 0% refused, but only 10% and 44% of their non-refusals open like a helpful answer, so their replies are probably off-topic or broken, and they should not be preferred.
+- So the better choice is layer 12 or 14, not 24. The headline numbers elsewhere (7.6% refused, jailbreak scores, cross-lingual) still use layer 24 and were not recomputed. The "helpful answer" check is crude (the fiction-frame problem in section 1 applies), so this is evidence, not proof, that replies are coherent. No broken-text flags were raised at any layer.
 
 ## 3. Easy test data
 

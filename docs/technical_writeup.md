@@ -30,7 +30,7 @@ This study uses Gemma-2-2B-it, because it is open, small enough for a free GPU, 
 
 **A single direction carries refusal in this model.** On the test split with the direction fitted at layer 24, 97.9% of harmful prompts were refused (141/144). Removing the direction dropped that to 7.6% [4, 13] (11/144). Removing a random direction left it at 97.6% ± 0.4% (five random directions). Adding the direction to harmless prompts raised refusals from 2.5% to 42.5% [35, 50], and on XSTest safe prompts from 7.6% to 86.4% (216/250). Removing it from XSTest unsafe prompts took refusals from 77.5% to 0.5% (1/200). Refitting on 80% subsets barely changes the direction (cosine 0.9997 with the full-data direction; refusal after ablation 7.4% ± 0.4%).
 
-**Layer 24 is not the best layer.** Validation prompts show removal works best at layers 8, 10, 12, 14 and 25 (0% still refused), worse at layers 16 to 24 (4% to 26%). Five layers tie and the code broke the tie arbitrarily, picking 25 (2.1% refused on test). Only layers 24 and 25 were run on the test split, so the early-layer result is a lead, not a finding.
+**Layer 24 is not the best layer.** Validation prompts show removal works best at layers 8, 10, 12, 14 and 25 (0% still refused), worse at layers 16 to 24 (4% to 26%). Running these on the test split: removing the direction fitted at layer 12 or 14 leaves 0.7% of harmful prompts refused (1/144), against 2.1% at layer 25 and 7.6% at layer 24. Layers 12 and 14 also have the highest share of non-refusals that open like a helpful answer (78% and 80%, against 53% at layer 24). Layers 8 and 10 leave 0% refused, but only 10% and 44% of their non-refusals look like helpful answers, so their replies are probably off-topic or broken. The headline numbers in this write-up still use layer 24 and were not recomputed.
 
 **The easy test is too easy; the hard test is informative.** Word counts alone separate harmful from harmless prompts with AUROC 0.992 (first word only: 0.875), so the direction's 0.999 on that test shows little. On XSTest, where safe and unsafe prompts share words, word counts fall to 0.613 while the direction keeps 0.978. So the direction encodes more than vocabulary.
 
@@ -49,7 +49,7 @@ This study uses Gemma-2-2B-it, because it is open, small enough for a free GPU, 
 The full list is in `results/limitations.md`. The main ones:
 
 - **The refusal judge is unvalidated on harmful prompts.** After removing the direction, 133 replies were "not refused"; the second check confirms 71 as helpful-looking and cannot classify 62. For the fiction-frame jailbreak it confirms none of 62, because stories do not open with "Sure". So the jailbreak success rates are unconfirmed. Reading harmful replies by hand would settle it but conflicts with the project's rule of not storing or printing them.
-- Early-layer ablation was confirmed only on validation prompts.
+- The headline numbers use layer 24; layers 12 and 14 work better on the test split but the experiments were not redone with them.
 - Mostly one seed and 144 test prompts; near-duplicate prompts across splits make test scores slightly optimistic.
 - The SAE features were not inspected and no feature was causally tested.
 - No Twi reader has checked any translation, and the Twi refusal phrases in the judge are unverified guesses.
@@ -66,7 +66,7 @@ The full list is in `results/limitations.md`. The main ones:
 
 ## 6. Future work
 
-- Run the test split for all tied early layers and check their replies stay coherent.
+- Redo the headline experiments (jailbreaks, cross-lingual) with the direction fitted at layer 12 or 14.
 - Validate the judge on harmful replies with a human reviewer in a private session (nothing saved), or a separate classifier.
 - Have a Twi reader check the translations and the refusal phrases, or use human-translated prompts.
 - Test whether individual refusal features matter by ablating them, and inspect them on Neuronpedia.

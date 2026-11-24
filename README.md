@@ -108,11 +108,11 @@ The repo holds only ids (`data/splits.json`), checksums (`data/manifest.json`) a
 
 ## Limitations
 
-The refusal judge is a phrase match that could not be checked against harmful replies (project rule: never store or print them), and a second check confirms only about half of the "not refused" replies as real compliance. Layer 24 is not the best layer (early layers and layer 25 tie at 0% on validation prompts, confirmed on test only for 24 and 25). Twi translations are poor and unchecked by a Twi reader. Mostly one seed, one model, home-made jailbreaks. Full list: [results/limitations.md](results/limitations.md).
+The refusal judge is a phrase match that could not be checked against harmful replies (project rule: never store or print them), and a second check confirms only about half of the "not refused" replies as real compliance. Layer 24 is not the best layer (on the test split, removing the direction fitted at layer 12 or 14 leaves 0.7% of harmful prompts refused against 7.6% at layer 24, but the headline numbers still use layer 24). Twi translations are poor and unchecked by a Twi reader. Mostly one seed, one model, home-made jailbreaks. Full list: [results/limitations.md](results/limitations.md).
 
 ## Future work
 
-Test all tied early layers; validate the judge on harmful replies in a private session; have a Twi reader review translations; ablate individual SAE features; more seeds, models and optimised jailbreaks.
+Redo the headline numbers at layer 12 or 14; validate the judge on harmful replies in a private session; have a Twi reader review translations; ablate individual SAE features; more seeds, models and optimised jailbreaks.
 
 ## Responsible use
 

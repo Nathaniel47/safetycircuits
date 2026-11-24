@@ -184,8 +184,9 @@ with tab_results:
         (
             "chart_layer_sweep.png",
             "2. Which layer? Removal works best at early layers and layer 25",
-            "Layers 8, 10, 12, 14 and 25 tie at 0% on validation prompts; only layers 24 and 25 "
-            "were confirmed on the test split.",
+            "Layers 8, 10, 12, 14 and 25 tie at 0% on validation prompts. On the test split, "
+            "layers 12 and 14 leave 0.7% refused (layer 24: 7.6%). The headline numbers elsewhere "
+            "still use layer 24.",
         ),
         (
             "chart_jailbreaks.png",
