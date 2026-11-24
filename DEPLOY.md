@@ -36,7 +36,7 @@ The demo is the Streamlit app in `app/browser.py`. It reads precomputed files fr
 ## Speed
 
 - A running app answers an example click in well under a second.
-- A **cold start can be slow.** Free Streamlit apps go to sleep after a few days without visitors, and the first visitor waits for the app to wake (often 30 seconds or more). Open the link yourself before sharing it. Visitors after that load it quickly. The load time was not measured on the real host, only locally.
+- A **cold start can be slow.** (Observed 2026-11-24: after four idle days the app showed a "This app has gone to sleep" page with a "Yes, get this app back up!" button, and woke in about 30 seconds.) Free Streamlit apps go to sleep after a few days without visitors, and the first visitor waits for the app to wake (often 30 seconds or more). Open the link yourself before sharing it. Visitors after that load it quickly. The load time was not measured on the real host, only locally.
 
 ## Updating the demo
 
