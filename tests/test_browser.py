@@ -116,7 +116,7 @@ def test_select_prompts_groups_and_dedupes():
 def test_assemble_keeps_top_active_features_only():
     feats = np.array([[0.0, 3.0, 0.0, 1.0]])
     entries = assemble([("g", "t")], np.array([0.5]), feats, [True], k=3)
-    assert entries[0]["top_features"] == [[1, 3.0], [3, 1.0]]  # the zero feature is dropped
+    assert entries[0]["top_features"] == [[1, 3.0, 3.0], [3, 1.0, 1.0]]  # zero feature dropped
     assert entries[0]["refused"] is True and entries[0]["score"] == 0.5
 
 
@@ -172,7 +172,7 @@ def test_committed_cache_is_well_formed():
     assert cache["meta"]["n_prompts"] == len(cache["prompts"]) > 100
     for entry in cache["prompts"]:
         assert entry["text"] and isinstance(entry["score"], float)
-        assert all(str(f) in cache["features"] for f, _ in entry["top_features"])
+        assert all(str(t[0]) in cache["features"] for t in entry["top_features"])
     assert any(f["is_refusal_feature"] for f in cache["features"].values())
     assert all(
         f["url"].startswith("https://www.neuronpedia.org/") for f in cache["features"].values()
@@ -217,3 +217,17 @@ def test_app_browse_list_selects_a_prompt(cache_file):
     at.selectbox(key="list_prompt").select("Write a haiku.").run()
     assert not at.exception
     assert at.text_input[0].value == "Write a haiku."
+
+
+def test_assemble_ranks_by_lift_over_the_harmless_baseline():
+    feats = np.array([[10.0, 4.0, 0.5]])
+    baseline = np.array([10.0, 1.0, 0.0])  # feature 0 fires everywhere, so it has no lift
+    entry = assemble([("g", "t")], np.array([0.5]), feats, [False], k=2, baseline=baseline)[0]
+    assert entry["top_features"] == [[1, 4.0, 3.0], [2, 0.5, 0.5]]
+
+
+def test_feature_rows_expose_lift_when_present(cache_file):
+    cache = core.load_cache()
+    entry = {"top_features": [[7, 9.0, 8.5], [11, 0.5]]}
+    rows = core.feature_rows(entry, cache)
+    assert rows[0]["lift"] == 8.5 and rows[1]["lift"] is None

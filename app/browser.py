@@ -66,22 +66,23 @@ def show_prompt(entry: dict) -> None:
         ]
         fig = go.Figure(
             go.Bar(
-                x=[r["activation"] for r in rows],
+                x=[r["lift"] if r["lift"] is not None else r["activation"] for r in rows],
                 y=labels,
                 orientation="h",
                 marker_color=["#c0392b" if r["refusal_feature"] else "#7f8c8d" for r in rows],
             )
         )
         fig.update_layout(
-            title="Top SAE features at the last prompt token (red = refusal feature)",
+            title="SAE features that fire most above their usual level (red = refusal feature)",
             height=340,
             yaxis={"autorange": "reversed", "type": "category"},
             margin={"t": 50, "b": 20},
         )
         st.plotly_chart(fig, width="stretch")
         st.caption(
-            "Red bars are among the 20 features that best separate harmful from harmless prompts. "
-            "On many prompts none of the 10 strongest features are red."
+            "Bar length = how far the feature is above its average on harmless prompts, at the "
+            "last prompt token. Red bars are among the 20 features that best separate harmful from "
+            "harmless prompts."
         )
         links = [f"- feature {r['feature']}: [Neuronpedia]({r['url']})" for r in rows if r["url"]]
         st.markdown("\n".join(links))

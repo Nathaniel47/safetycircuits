@@ -79,17 +79,27 @@ def assemble(
     feats: np.ndarray,
     refused: list[bool],
     k: int = TOP_K,
+    baseline: np.ndarray | None = None,
 ) -> list[dict]:
+    """Cache entries. With a baseline (each feature's mean on harmless prompts), the top
+    features are ranked by their lift over that baseline, so features that fire on almost
+    every prompt do not crowd out the informative ones. Each feature is [id, activation, lift].
+    """
     entries = []
     for (group, text), score, row, flag in zip(pairs, scores, feats, refused, strict=True):
-        top = np.argsort(-row)[:k]
+        lift = row - baseline if baseline is not None else row
+        top = np.argsort(-lift)[:k]
         entries.append(
             {
                 "group": group,
                 "text": text,
                 "score": round(float(score), 4),
                 "refused": bool(flag),
-                "top_features": [[int(f), round(float(row[f]), 3)] for f in top if row[f] > 0],
+                "top_features": [
+                    [int(f), round(float(row[f]), 3), round(float(lift[f]), 3)]
+                    for f in top
+                    if lift[f] > 0
+                ],
             }
         )
     return entries
@@ -97,7 +107,7 @@ def assemble(
 
 def feature_table(entries: list[dict], refusal_rows: list[dict], layer: int) -> dict[str, dict]:
     refusal = {r["feature"]: r for r in refusal_rows}
-    ids = {f for e in entries for f, _ in e["top_features"]} | set(refusal)
+    ids = {t[0] for e in entries for t in e["top_features"]} | set(refusal)
     return {
         str(f): {
             "url": neuronpedia_url(layer, f),
@@ -150,14 +160,16 @@ def main() -> None:
     train_h = [data["harmful"][i] for i in splits["harmful"]["train"][:128]]
     train_l = [data["harmless"][i] for i in splits["harmless"]["train"][:128]]
     h_mean = float((residuals(model, tok, train_h)[:, layer] @ unit).mean())
-    l_mean = float((residuals(model, tok, train_l)[:, layer] @ unit).mean())
+    harmless_train_acts = residuals(model, tok, train_l)[:, layer]
+    l_mean = float((harmless_train_acts @ unit).mean())
     acts = residuals(model, tok, prompts)[:, layer]
     scores = (acts @ unit - l_mean) / (h_mean - l_mean)
     sae = load_sae(layer)
     feats = sae.encode(acts)
+    baseline = sae.encode(harmless_train_acts).mean(axis=0)
     refused = refusal_flags(model, tok, prompts)
 
-    entries = assemble(pairs, scores, feats, refused)
+    entries = assemble(pairs, scores, feats, refused, baseline=baseline)
     cache = {
         "meta": {
             "layer": layer,
@@ -165,6 +177,7 @@ def main() -> None:
             "sae": "gemma-scope-2b-pt-res (base model SAE)",
             "git_commit": git_commit(),
             "n_prompts": len(entries),
+            "feature_ranking": "lift over the mean on 128 harmless train prompts",
         },
         "features": feature_table(entries, refusal_rows, layer),
         "prompts": entries,

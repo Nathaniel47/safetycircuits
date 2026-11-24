@@ -82,12 +82,13 @@ def feature_rows(entry: dict, cache: dict) -> list[dict]:
     """Top features of a prompt joined with what is known about each feature."""
     table = cache.get("features", {})
     rows = []
-    for feature, activation in entry["top_features"]:
+    for feature, activation, *rest in entry["top_features"]:
         info = table.get(str(feature), {})
         rows.append(
             {
                 "feature": feature,
                 "activation": activation,
+                "lift": rest[0] if rest else None,
                 "refusal_feature": bool(info.get("is_refusal_feature")),
                 "url": info.get("url") or "",
             }
