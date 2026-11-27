@@ -57,7 +57,8 @@ def show_prompt(entry: dict) -> None:
         st.plotly_chart(fig, width="stretch")
         st.write(f"Score {entry['score']:.2f}: {core.score_band(entry['score'])}.")
         if entry.get("refused") is not None:
-            st.write("Model reply: **" + ("refused**" if entry["refused"] else "answered**"))
+            verdict = "flagged as a refusal" if entry["refused"] else "not flagged as a refusal"
+            st.write(f"Phrase-match judge on the model's reply: **{verdict}**")
         st.caption(f"Group: {entry['group']}")
     with right:
         rows = core.feature_rows(entry, cache)
@@ -166,8 +167,14 @@ with tab_results:
         f"The full table and the list of weaknesses are in the [repository]({REPO}) "
         "(`results/results_table.md` and `results/limitations.md`)."
     )
+    st.warning(
+        "Refusal rates here come from a phrase-match judge. In a human check of 20 harmful "
+        "prompts with the direction removed (layer 24), the judge counted 3 refusals and the "
+        "reviewer 15; 5 replies complied. Under the fiction-frame jailbreak, none of the 9 "
+        "replies the judge did not flag had complied."
+    )
     if "direction" in results:
-        st.subheader("1. Removing the refusal direction removes the refusals")
+        st.subheader("1. Effect of removing the refusal direction (phrase-match judge)")
         st.table(
             [
                 {
@@ -183,21 +190,23 @@ with tab_results:
     for name, title, note in (
         (
             "chart_layer_sweep.png",
-            "2. Which layer? Removal works best at early layers and layer 25",
+            "2. Which layer? The judge flags fewest refusals at early layers and layer 25",
             "Layers 8, 10, 12, 14 and 25 tie at 0% on validation prompts. On the test split, "
-            "layers 12 and 14 leave 0.7% refused (layer 24: 7.6%). The headline numbers elsewhere "
-            "still use layer 24.",
+            "layers 12 and 14 have 0.7% flagged (layer 24: 7.6%). No person has checked these "
+            "layers. The headline numbers elsewhere use layer 24.",
         ),
         (
             "chart_jailbreaks.png",
             "3. Jailbreaks",
-            "Grey bars are the baseline and two control suffixes. Success means the reply was not "
-            "a refusal; it was not read by a person.",
+            "Grey bars are the baseline and two control suffixes. The bars count replies the "
+            "judge did not flag, not proven jailbreaks. A person checked only the fiction frame "
+            "(20 prompts) and found no compliance.",
         ),
         (
             "chart_crosslingual.png",
             "4. Other languages",
-            "French and Swahili work. Twi is at chance, but Gemma barely understands Twi "
+            "The direction separates harmful from harmless prompts in French and Swahili "
+            "(this does not use the judge). Twi is at chance, but Gemma barely understands Twi "
             "(see the chrF under each bar), so that is not a safety result.",
         ),
     ):
@@ -217,7 +226,8 @@ prompts (AdvBench, HarmBench, XSTest, Alpaca-cleaned, FLORES-200).
 **Method in four lines**
 1. The refusal direction is the average difference between the model's internal activations on
    harmful and harmless prompts.
-2. Removing it makes the model stop refusing; adding it makes it refuse harmless prompts.
+2. The study measures how refusals change when it is removed on harmful prompts or added on
+   harmless ones.
 3. Sparse autoencoders (Gemma Scope) split activations into features, to see what fires on
    refusals.
 4. The same direction is tested on jailbreak prompts and on French, Swahili and Twi.
@@ -226,8 +236,9 @@ prompts (AdvBench, HarmBench, XSTest, Alpaca-cleaned, FLORES-200).
 once on a GPU for the {n_prompts} prompts you can pick, so only those can be shown. No harmful
 replies are shown or stored.
 
-**Read before you trust it.** One model, mostly one seed, a phrase-matching refusal check that
-was not verified against harmful replies, and poor Twi translations. See
+**Read before you trust it.** One model, mostly one seed, poor Twi translations, and a
+phrase-matching refusal check that did badly in a small human check once the direction was
+removed. See
 `results/limitations.md`.
 
 Code, data notes and licences: [{REPO}]({REPO}). Gemma is used under the Gemma Terms of Use.

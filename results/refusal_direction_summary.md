@@ -1,5 +1,7 @@
 # Refusal direction: first full run (Gemma-2-2B-it)
 
+> **Correction (2026-11-27).** Refusal rates below are a phrase-match judge's counts. A human check found the judge missed most refusals when the direction was removed, and that unflagged fiction-frame replies had not complied. Read [limitations.md](limitations.md), section 1, before using any rate or conclusion here.
+
 Source: `results/refusal_direction.json` and `results/refusal_direction.npy`, written by `python -m safetycircuits.refusal.run` on Kaggle (T4, fp32, torch 2.11, Python 3.13, run from commit `c405369`). The numbers match the output first pasted from the notebook. Seed 0, one run, greedy decoding, refusal judged by the string-match classifier in `safetycircuits/refusal/classify.py`. Intervals are 95% Wilson.
 
 Chosen layer: **24** (of 26), picked on the validation split. Ablating the top three layers on val gave harmful-prompt refusal of 4.9% (layer 24), 12.5% (layer 23) and 26.4% (layer 22). The addition strength is 465.7, the length of the mean difference at layer 24. The direction file holds the unit vector (2304 values).

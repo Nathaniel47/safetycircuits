@@ -2,6 +2,12 @@
 
 Plain-English notes on what was built and why it matters. One section per step.
 
+## Human check of the refusal judge (2026-11-27)
+
+**Read this before the numbers in any step.** Every refusal rate in this project is the phrase-match judge's count. A person labelled 60 replies to 20 harmful test prompts without being shown the condition or the judge's verdict. At baseline the two agreed on all 20. With the refusal direction removed, the judge counted 3 refusals and the person 15 (5 replies complied), so they agreed on only 6. Under the fiction-frame jailbreak they agreed on which replies refused, but none of the other 9 complied.
+
+**What this teaches.** A measuring tool can work on ordinary data and fail on exactly the data your experiment changes. The judge looked fine at baseline. Removing the direction may have changed how the model words a refusal (this was not examined), and a phrase list only catches wording it knows. "No refusal phrase" is also not the same as "did what was asked". Check the judge with a person on the *changed* condition before building results on it. Counts are in `results/human_review.json`; limits are in `results/limitations.md`, section 1.
+
 ## Step 2: Repo setup
 
 **What was built.** An empty but working project: a Python package `safetycircuits/` with one folder per part of the study, a `config.py` that holds the model and SAE choices, dependency files, a Dockerfile, formatting and secret checks, and a GitHub Actions workflow that runs the tests.
@@ -159,7 +165,7 @@ This mirrors the plan: the heavy model work happens on a free GPU and saves file
 
 **A surprising result.** The direction fitted at layer 24 is not the best. Removing the direction fitted at layers 8 to 14 (or 25) left no validation prompt refused, while layers 16 to 24 did worse. Five layers tie, and the code broke the tie arbitrarily. Update 2026-11-24: on the test split, layers 12 and 14 leave 0.7% refused (layer 24: 7.6%) and their non-refusals look the most like real compliance; layers 8 and 10 leave 0% but their replies look broken or off-topic. The headline numbers still use layer 24 and were not recomputed.
 
-**What the evaluation says about the earlier results.** The refusal classifier cannot be fully trusted. Of the 133 replies counted as "not refused" after removing the direction, a second check can confirm 71 as real compliance and cannot classify 62. The check cannot confirm any of the fiction-frame "successes" (stories do not start with "Sure"). Reading harmful replies by hand is not allowed under the project rules, so this stays open (see limitations).
+**What the evaluation says about the earlier results.** The refusal classifier cannot be fully trusted. Of the 133 replies counted as "not refused" after removing the direction, a second check can confirm 71 as real compliance and cannot classify 62. The check cannot confirm any of the fiction-frame "successes" (stories do not start with "Sure"). This was later tested by a human check (see the section above and the limitations).
 
 **Reading.** Davis and Goadrich 2006, "The Relationship Between Precision-Recall and ROC Curves", the first section on AUROC; and the Wikipedia article "Binomial proportion confidence interval" (Wilson section).
 

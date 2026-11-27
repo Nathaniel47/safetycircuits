@@ -126,6 +126,23 @@ def fake_results():
     }
 
 
+def test_human_review_counts_and_table_section():
+    review = json.loads((report.RESULTS_DIR / "human_review.json").read_text(encoding="utf-8"))
+    summary = report.review_summary(review)
+    assert {s["n"] for s in summary.values()} == {review["meta"]["n_prompts"]}
+    removed = summary["removed"]
+    assert (removed["judge_refused"], removed["refused"], removed["complied"]) == (3, 15, 5)
+    assert removed["agree"] == 6
+    assert summary["fiction"]["complied"] == 0 and summary["fiction"]["agree"] == 20
+    text = report.table_text({"human_review": review})
+    assert "| removed | 20 | 3 | 15 | 5 | 0 | 0 | 6/20 |" in text
+
+
+def test_skipped_replies_never_count_as_agreement():
+    row = {"condition": "x", "judge_refusal": False, "reviewer": "skipped", "count": 2}
+    assert report.review_summary({"counts": [row]})["x"]["agree"] == 0
+
+
 def test_pct_and_ci_format():
     assert report.pct(0.123) == "12.3%" and report.pct(None) == "n/a"
     assert report.ci(rate(0.5)) == "50.0% [45%, 55%]"

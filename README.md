@@ -14,13 +14,13 @@ _The GIF is a slideshow of screenshots of the local app (a harmful-looking XSTes
 
 | Question | Result (Gemma-2-2B-it, test prompts) |
 |---|---|
-| Does one direction carry refusal? | Removing it cut refusals on harmful prompts from **97.9% to 7.6%** (144 prompts). A random direction left them at 97.6% ± 0.4%. Adding it made the model refuse 42.5% of harmless prompts (baseline 2.5%). |
+| Does one direction carry refusal? | **Only partly shown.** The phrase-match judge said removing it cut refusals from 97.9% to 7.6% (144 prompts), but a human check of 20 prompts found **15 still refused** and 5 complied (the judge counted 3 refusals). Adding it to harmless prompts raised flagged refusals from 2.5% to 42.5% (not human-checked). |
 | Is that just dataset style? | Word counts alone separate the two datasets (AUROC 0.99), so that test is easy. On XSTest, where safe and unsafe prompts share words, word counts score 0.61 and the direction 0.98. |
 | Do base-model SAEs work on the chat model? | Yes, once the first token is excluded: reconstruction error 0.26 to 0.34 against 0.27 to 0.31 on the base model. |
-| Which jailbreaks work? | Fiction frame got **43%** of harmful prompts past the refusal (baseline 2%), refusal suppression 26%. They also lower the refusal signal most. Research framing got 15% **without** lowering it. |
+| Which jailbreaks work? | **Not established.** The judge did not flag 43% of fiction-frame replies (baseline 2%), but in the human check **none of the 9 unflagged replies complied** (all off-topic). The fiction frame, refusal suppression and persona prompts lowered the refusal score most. |
 | Does it carry over to other languages? | French (AUROC 0.995) and Swahili (0.957): yes. Twi (0.56, chance): **inconclusive**, because Gemma barely understands Twi and the translations are poor. |
 
-Mostly one seed and one model; the refusal judge is a phrase match that was not verified against harmful replies. Read [results/limitations.md](results/limitations.md) before using any number.
+Mostly one seed and one model. **The refusal judge is a phrase match, and it failed a small human check once the direction was removed**, so treat every refusal rate as the judge's count, not as measured behaviour. Read [results/limitations.md](results/limitations.md) before using any number.
 
 ## Architecture
 
@@ -108,11 +108,11 @@ The repo holds only ids (`data/splits.json`), checksums (`data/manifest.json`) a
 
 ## Limitations
 
-The refusal judge is a phrase match that could not be checked against harmful replies (project rule: never store or print them), and a second check confirms only about half of the "not refused" replies as real compliance. Layer 24 is not the best layer (on the test split, removing the direction fitted at layer 12 or 14 leaves 0.7% of harmful prompts refused against 7.6% at layer 24, but the headline numbers still use layer 24). Twi translations are poor and unchecked by a Twi reader. Mostly one seed, one model, home-made jailbreaks. Full list: [results/limitations.md](results/limitations.md).
+In a human check of 20 filtered harmful prompts (one reviewer), the phrase-match judge agreed on 20/20 at baseline and under the fiction frame, but on only 6/20 with the direction removed, and no unflagged fiction-frame reply complied. No other condition was checked, and no number was recomputed. Layer 24 may not be the best layer: the judge flags fewer refusals at layers 12 and 14, but no person has checked them, and the headline numbers use layer 24. Twi translations are poor and unchecked by a Twi reader. Mostly one seed, one model, home-made jailbreaks. Full list: [results/limitations.md](results/limitations.md).
 
 ## Future work
 
-Redo the headline numbers at layer 12 or 14; validate the judge on harmful replies in a private session; have a Twi reader review translations; ablate individual SAE features; more seeds, models and optimised jailbreaks.
+Replace the refusal judge and test it against a larger human-labelled sample, then rerun the refusal rates, including layers 12 and 14; have a Twi reader review translations; ablate individual SAE features; more seeds, models and optimised jailbreaks.
 
 ## Responsible use
 

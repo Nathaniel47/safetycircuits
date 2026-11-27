@@ -1,5 +1,7 @@
 # Step 5: results (Kaggle run, 2026-11-20)
 
+> **Correction (2026-11-27).** Refusal rates below are a phrase-match judge's counts. A human check found the judge missed most refusals when the direction was removed, and that unflagged fiction-frame replies had not complied. Read [limitations.md](limitations.md), section 1, before using any rate or conclusion here.
+
 Source: `results/sae_features.json`, `jailbreaks.json`, `translation_quality.json`, `crosslingual.json` and `browser_cache.json`, written by the Step 5 modules on Kaggle (T4 x2, seed 0, run from commit `db3aa94`). The SAE and jailbreak numbers below were first read off the screen and match the JSON files exactly. One run, one seed, string-match refusal check, nothing hand-checked.
 
 ## SAE fit (Gemma Scope 16k SAEs trained on the base model)
